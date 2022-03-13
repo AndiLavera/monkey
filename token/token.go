@@ -27,7 +27,6 @@ const (
 	RBRACE    = "}"
 
 	// Keywords
-	// 1343456
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
 	TRUE     = "TRUE"
