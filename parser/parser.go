@@ -15,7 +15,7 @@ const (
 	LESSGREATER = 3 // > or <
 	SUM         = 4 // +
 	PRODUCT     = 5 // *
-	PREFIX      = 6 // -Xor!X
+	PREFIX      = 6 // -X, --X, !X, !!X, &X, *X
 	CALL        = 7 // myFunction(X)
 )
 
@@ -118,13 +118,13 @@ func (parser *Parser) parseStatement() ast.Statement {
 }
 
 func (parser *Parser) parseLetStatement() *ast.LetStatement {
-	stmt := &ast.LetStatement{Token: parser.curToken}
+	statement := &ast.LetStatement{Token: parser.curToken}
 
 	if !parser.expectPeek(token.IDENT) {
 		return nil
 	}
 
-	stmt.Name = &ast.Identifier{
+	statement.Name = &ast.Identifier{
 		Token: parser.curToken,
 		Value: parser.curToken.Literal,
 	}
@@ -138,11 +138,11 @@ func (parser *Parser) parseLetStatement() *ast.LetStatement {
 		parser.nextToken()
 	}
 
-	return stmt
+	return statement
 }
 
 func (parser *Parser) parseReturnStatement() *ast.ReturnStatement {
-	stmt := &ast.ReturnStatement{Token: parser.curToken}
+	statement := &ast.ReturnStatement{Token: parser.curToken}
 
 	parser.nextToken()
 	// TODO: We're skipping the expressions until we
@@ -150,19 +150,19 @@ func (parser *Parser) parseReturnStatement() *ast.ReturnStatement {
 	for !parser.curTokenIs(token.SEMICOLON) {
 		parser.nextToken()
 	}
-	return stmt
+	return statement
 }
 
 func (parser *Parser) parseExpressionStatement() *ast.ExpressionStatement {
-	stmt := &ast.ExpressionStatement{Token: parser.curToken}
+	statement := &ast.ExpressionStatement{Token: parser.curToken}
 
-	stmt.Expression = parser.parseExpression(LOWEST)
+	statement.Expression = parser.parseExpression(LOWEST)
 
 	if parser.peekTokenIs(token.SEMICOLON) {
 		parser.nextToken()
 	}
 
-	return stmt
+	return statement
 }
 
 // Checking whether we have a parsing function associated
@@ -232,10 +232,10 @@ func (parser *Parser) ParseProgram() *ast.Program {
 	program.Statements = []ast.Statement{}
 
 	for parser.curToken.Type != token.EOF {
-		stmt := parser.parseStatement()
+		statement := parser.parseStatement()
 
-		if stmt != nil {
-			program.Statements = append(program.Statements, stmt)
+		if statement != nil {
+			program.Statements = append(program.Statements, statement)
 		}
 
 		parser.nextToken()
