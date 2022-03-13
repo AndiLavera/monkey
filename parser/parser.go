@@ -25,7 +25,8 @@ type (
 )
 
 // Associates token types with their precedence
-var precedences = map[token.TokenType]int{token.EQ: EQUALS,
+var precedences = map[token.TokenType]int{
+	token.EQ:       EQUALS,
 	token.NOT_EQ:   EQUALS,
 	token.LT:       LESSGREATER,
 	token.GT:       LESSGREATER,
