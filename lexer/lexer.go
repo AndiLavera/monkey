@@ -71,8 +71,6 @@ func (lexer *Lexer) NextToken() token.Token {
 
 	switch lexer.curChar {
 	case '=':
-		tok = newToken(token.ASSIGN, lexer.curChar)
-
 		if lexer.peekChar() == '=' {
 			curChar := lexer.curChar
 			lexer.readChar()
@@ -97,7 +95,6 @@ func (lexer *Lexer) NextToken() token.Token {
 	case '-':
 		tok = newToken(token.MINUS, lexer.curChar)
 	case '!':
-		tok = newToken(token.BANG, lexer.curChar)
 		if lexer.peekChar() == '=' {
 			ch := lexer.curChar
 			lexer.readChar()

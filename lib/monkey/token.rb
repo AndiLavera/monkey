@@ -6,8 +6,8 @@ module Monkey
     EOF     = 'EOF'
 
     # Identifiers + literals
-    IDENT = 'IDENT' # add, foobar, x, y, ... identifier
-    INT   = 'INT'
+    IDENTIFIER = 'IDENTIFIER' # add, foobar, x, y, ... identifier
+    INT        = 'INT'
 
     # Operators
     ASSIGN   = '='
@@ -22,12 +22,12 @@ module Monkey
     NOT_EQ   = '!='
 
     # Delimiters
-    COMMA     = ','
-    SEMICOLON = ';'
-    LPAREN    = '('
-    RPAREN    = ')'
-    LBRACE    = '{'
-    RBRACE    = '}'
+    COMMA      = ','
+    SEMICOLON  = ';'
+    L_PAREN    = '('
+    R_PAREN    = ')'
+    L_BRACE    = '{'
+    R_BRACE    = '}'
 
     # Keywords
     FUNCTION = 'FUNCTION'
@@ -46,15 +46,28 @@ module Monkey
       'if' => IF,
       'else' => ELSE,
       'return' => RETURN
-    }
+    }.freeze
 
-    def self.lookup_identifier(identifier)
-      KEYWORDS[identifier] || IDENT
+    # @return [String]
+    attr_reader :type, :literal
+
+    # Tries to find the language defined keyword otherwise returns the `identifier` keyword.
+    # @param input [String] The user's input
+    # @return [String] Type of identifier of an inputted string.
+    def self.lookup_keyword(input)
+      KEYWORDS[input] || IDENTIFIER
     end
 
-    def initialize(type:, literal:)
+    # @param type [String] opts the options to create a message with.
+    # @param literal [String] The literal text input
+    def initialize(type, literal)
       @type = type
       @literal = literal
+    end
+
+    # @param other [Token]
+    def ==(other)
+      type == other.type && literal == other.literal
     end
   end
 end
