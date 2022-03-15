@@ -1,5 +1,6 @@
 #include <stdio.h>
-int main() {
+int main()
+{
    char my_test_variable[] = "Hello world";
    printf("%s", my_test_variable);
    return 0;
