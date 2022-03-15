@@ -1,0 +1,17 @@
+require 'rspec/core/rake_task'
+
+namespace 'test' do
+  desc 'Run all tests'
+  task :all do
+    RSpec::Core::RakeTask.new(:spec)
+    Rake::Task['spec'].execute
+  end
+
+  desc 'Run tests for tokenizer'
+  task :token do
+    RSpec::Core::RakeTask.new(:spec) do |t|
+      t.pattern = Dir.getwd + '/spec/token/*_spec.rb'
+    end
+    Rake::Task['spec'].execute
+  end
+end
