@@ -24,16 +24,12 @@ module Monkey
 
         break if input == EXIT
 
-        puts input
         lexer.reset!(input: input)
 
-        token = lexer.next_token!
-        until token.eof?
-          puts token.inspect
+        until lexer.finished?
           token = lexer.next_token!
+          puts token.inspect
         end
-        puts token.inspect # EOF
-
       rescue Interrupt
         puts
       end

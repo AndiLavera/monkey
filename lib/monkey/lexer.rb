@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require 'monkey/token'
+require 'byebug'
 
 module Monkey
   # rubocop:disable Metrics/ClassLength
@@ -32,6 +33,8 @@ module Monkey
       read_char!
     end
 
+    # Resets the lexer back to the original state without having to instaniate a new `Lexer` instance.
+    # Only used for the REPL right now.
     sig do
       params(
         input: String,
@@ -50,12 +53,16 @@ module Monkey
       @position = position
       @read_position = read_position
       @current_character = current_character
+
+      read_char!
     end
 
     # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
+
+    # TODO: Will keep incrementing positions when returning EOF tokens. Would have to fix `.finished?` as well.
     sig { returns(Token) }
     def next_token!
       skip_whitespace!
@@ -115,14 +122,23 @@ module Monkey
       read_char!
       token
     end
+
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/AbcSize
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
 
+    # Returns `true` when the lexer has completed and `Lexer#next_token!` has returned the EOF token atleast once
+    #
+    # Usage:
+    #
+    # ```ruby
+    # tokens = []
+    # tokens << lexer.next_token! until lexer.finished?
+    # ```
     sig { returns(T::Boolean) }
-    def eof?
-      read_position >= input.size
+    def finished?
+      read_position > input.size + 1
     end
 
     private
@@ -133,33 +149,33 @@ module Monkey
     sig { returns(Integer) }
     attr_reader :read_position, :position
 
+    # Runs the `read_position` counter until the end of an identifier and returns that slice.
     sig { returns(String) }
     def read_identifier
       start_pos = position
       read_char! while letter?
 
-      input[start_pos...position].to_s
+      input[start_pos..read_position].to_s
     end
 
+    # Runs the `read_position` counter until the end of an digit and returns that slice.
     sig { returns(String) }
     def read_number
       start_pos = position
       read_char! while digit?
 
-      input[start_pos...position].to_s
+      input[start_pos..read_position].to_s
     end
 
-    sig { returns(String) }
-    def read_char
-      self.curr_char = eof? ? EOF_MARKER : read_current_position
-    end
-
+    # Sets `@current_character` to the character in the `input`.
+    # Increments positions
     sig { void }
     def read_char!
-      read_char
+      self.curr_char = eof? ? EOF_MARKER : read_current_position
       move_position!
     end
 
+    # Increments positions until we get to a non-whitespace character
     sig { void }
     def skip_whitespace!
       read_char! while whitespace?
@@ -192,6 +208,7 @@ module Monkey
       @current_character = other
     end
 
+    # Looks one character ahead
     sig { returns(String) }
     def peek_char
       @input[@read_position].to_s # Convert `nil` to empty string
@@ -211,6 +228,11 @@ module Monkey
     sig { returns(String) }
     def read_current_position
       input[read_position].to_s
+    end
+
+    sig { returns(T::Boolean) }
+    def eof?
+      read_position >= input.size
     end
   end
   # rubocop:enable Metrics/ClassLength
