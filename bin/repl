@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'monkey'
+
+Monkey::Repl.start

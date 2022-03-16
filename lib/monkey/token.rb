@@ -69,5 +69,9 @@ module Monkey
     def ==(other)
       type == other.type && literal == other.literal
     end
+
+    def eof?
+      type == EOF
+    end
   end
 end

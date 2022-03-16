@@ -113,7 +113,7 @@ if (5 < 10) {
       lexer = Monkey::Lexer.new(input: input)
 
       tokens.each do |token|
-        expect(lexer.next_token).to eq(token)
+        expect(lexer.next_token!).to eq(token)
       end
     end
   end

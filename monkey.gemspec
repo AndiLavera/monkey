@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.7.0'
 
   s.name         = 'monkey'
-  s.version      = MONKEY::VERSION
+  s.version      = Monkey::VERSION
   s.summary      = 'Monkey Compilier'
   s.description  = 'Monkey Compilier is a compilier for compiling the monkey language.'
   s.authors      = ['Andi Crotwell']
