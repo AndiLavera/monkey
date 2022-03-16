@@ -1,19 +1,24 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Monkey
   module AST
     class BlockStatement
+      extend T::Sig
       include Statement
 
-      # @param token [Token]
-      # @param statements [Array<Statment>]
+      sig do
+        params(
+          token: Token,
+          statements: T::Array[Statement]
+        ).void
+      end
       def initialize(token:, statements:)
         super(token: token)
         @statements = statements
       end
 
-      # @return [String]
+      sig { returns(String) }
       def to_s
         @statements.map(&:to_s).join(' ')
       end

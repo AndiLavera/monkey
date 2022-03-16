@@ -1,15 +1,21 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Monkey
   module AST
     class IfExpression
+      extend T::Sig
+
       include Expression
 
-      # @param token [Token]
-      # @param condition [Expression]
-      # @param consequence [BlockStatement]
-      # @param alternative [BlockStatement, void]
+      sig do
+        params(
+          token: Token,
+          condition: Expression,
+          consequence: BlockStatement,
+          alternative: T.nilable(BlockStatement)
+        ).void
+      end
       def initialize(token:, condition:, consequence:, alternative:)
         super(token: token)
         @condition = condition
@@ -17,6 +23,7 @@ module Monkey
         @alternative = alternative
       end
 
+      sig { returns(String) }
       def to_s
         "if #{@condition} #{@consequence}#{@alternative ? " else #{@alternative}" : nil}"
       end

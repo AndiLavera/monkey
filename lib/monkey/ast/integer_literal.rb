@@ -1,13 +1,14 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Monkey
   module AST
     class IntegerLiteral
+      extend T::Sig
+
       include Expression
 
-      # @param token [Token]
-      # @param value [Integer]
+      sig { params(token: Token, value: Integer).void }
       def initialize(token:, value:)
         super(token: token)
         @value = value

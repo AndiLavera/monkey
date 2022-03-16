@@ -5,7 +5,7 @@
 #
 #   https://github.com/sorbet/sorbet-typed/edit/master/lib/rspec-core/all/rspec-core.rbi
 #
-# typed: true
+# typed: strict
 
 module RSpec::Core::ShellEscape
   def conditionally_quote(id); end
@@ -17,6 +17,7 @@ module RSpec::Core::ShellEscape
   def self.shell_allows_unquoted_ids?; end
   def shell_allows_unquoted_ids?; end
 end
+
 class RSpec::Core::RakeTask < ::Rake::TaskLib
   include ::Rake::DSL
   include RSpec::Core::ShellEscape

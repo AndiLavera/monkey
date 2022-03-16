@@ -1,15 +1,13 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Monkey
   module AST
     class PrefixExpression
+      extend T::Sig
       include Expression
 
-      # @param token [Token]
-      # @param operator [String]
-      # @param left [Expression]
-      # @param right [Expression]
+      sig { params(token: Token, operator: String, left: Expression, right: Expression).void }
       def initialize(token:, operator:, left:, right:)
         super(token: token)
         @operator = operator
@@ -17,6 +15,7 @@ module Monkey
         @right = right
       end
 
+      sig { returns(String) }
       def to_s
         "(#{@left} #{@operator} #{@right}})"
       end

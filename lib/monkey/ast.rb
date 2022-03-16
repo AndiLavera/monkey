@@ -21,12 +21,11 @@ module Monkey
     class Program
       extend T::Sig
 
-      # @param [Array<AST::Node>]
+      sig { params(statements: T::Array[Node]).void }
       def initialize(statements = [])
         @statements = statements
       end
 
-      # @return [String]
       sig { returns(String) }
       def to_s
         @statements.map(&:to_s).join(' ')

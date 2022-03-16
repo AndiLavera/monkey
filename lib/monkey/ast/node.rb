@@ -1,20 +1,23 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Monkey
   module AST
     module Node
-      # @param token [Token]
+      extend T::Sig
+
+      sig { params(token: Token).void }
       def initialize(token:)
         @token = token
       end
 
-      # @return [String]
+      sig { returns(String) }
       def token_literal
         @token.literal
       end
 
-      # @return [String]
+
+      sig { returns(String) }
       def to_s
         token_literal
       end

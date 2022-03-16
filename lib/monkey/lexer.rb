@@ -1,4 +1,4 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 require 'monkey/token'
@@ -6,12 +6,18 @@ require 'monkey/token'
 module Monkey
   # rubocop:disable Metrics/ClassLength
   class Lexer
-    EOF_MARKER = 0
+    extend T::Sig
 
-    # @param input [String]
-    # @param position [Integer]
-    # @param read_position [Integer]
-    # @param current_character [String, Integer]
+    EOF_MARKER = 'EOF'
+
+    sig do
+      params(
+        input: String,
+        position: Integer,
+        read_position: Integer,
+        current_character: String
+      ).void
+    end
     def initialize(
       input: '',
       position: 0,
@@ -26,10 +32,14 @@ module Monkey
       read_char!
     end
 
-    # @param input [String]
-    # @param position [Integer]
-    # @param read_position [Integer]
-    # @param current_character [String, Integer]
+    sig do
+      params(
+        input: String,
+        position: Integer,
+        read_position: Integer,
+        current_character: String
+      ).void
+    end
     def reset!(
       input: '',
       position: 0,
@@ -46,6 +56,7 @@ module Monkey
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
+    sig { returns(Token) }
     def next_token!
       skip_whitespace!
 
@@ -109,87 +120,97 @@ module Monkey
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
 
+    sig { returns(T::Boolean) }
     def eof?
       read_position >= input.size
     end
 
     private
 
-    # @return input [String]
-    # @return current_character [String, Integer]
-    # @return read_position [Integer]
-    # @return position [Integer]
-    attr_reader :input, :current_character,
-                :read_position, :position
+    sig { returns(String) }
+    attr_reader :input
 
+    sig { returns(Integer) }
+    attr_reader :read_position, :position
+
+    sig { returns(String) }
     def read_identifier
       start_pos = position
       read_char! while letter?
 
-      input[start_pos...position]
+      input[start_pos...position].to_s
     end
 
+    sig { returns(String) }
     def read_number
       start_pos = position
       read_char! while digit?
 
-      input[start_pos...position]
+      input[start_pos...position].to_s
     end
 
-    # @return [String, Integer]
+    sig { returns(String) }
     def read_char
-      self.curr_char = eof? ? EOF_MARKER : input[read_position]
+      self.curr_char = eof? ? EOF_MARKER : read_current_position
     end
 
-    # @return [void]
+    sig { void }
     def read_char!
       read_char
       move_position!
     end
 
-    # @return [void]
+    sig { void }
     def skip_whitespace!
       read_char! while whitespace?
     end
 
+    sig { returns(T::Boolean) }
     def letter?
       !eof? && !!curr_char.match(/[_a-zA-Z]/)
     end
 
-    # @return [Boolean]
+    sig { returns(T::Boolean) }
     def digit?
       # TODO: /[0-9]/ ?
       !eof? && !!curr_char.match(/^(\d*[.\d]+)/)
     end
 
-    # @return [Boolean]
+    sig { returns(T::Boolean) }
     def whitespace?
       ["\n", "\t", ' ', "\r"].include? curr_char
     end
 
     # @return [String, Integer]
+    sig { returns(String) }
     def curr_char
-      current_character
+      @current_character
     end
 
-    # @param other [String, Integer]
-    # @return [String, Integer]
+    sig { params(other: String).void }
     def curr_char=(other)
       @current_character = other
     end
 
-    # @return [String]
+    sig { returns(String) }
     def peek_char
       @input[@read_position].to_s # Convert `nil` to empty string
     end
 
+    sig { returns(Integer) }
     def move_position!
       @position = @read_position
       @read_position += 1
     end
 
+    sig { returns(T::Boolean) }
     def peek_char_assign?
       peek_char == Token::ASSIGN
+    end
+
+    sig { returns(String) }
+    def read_current_position
+      input[read_position].to_s
     end
   end
   # rubocop:enable Metrics/ClassLength

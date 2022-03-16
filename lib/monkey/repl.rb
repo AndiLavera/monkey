@@ -1,16 +1,20 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Monkey
   class Repl
+    extend T::Sig
+
     PROMPT = 'imk> '
     EXIT = 'exit'
 
+    sig { void }
     def self.start
       new.run
     end
 
     # rubocop:disable Metrics/MethodLength
+    sig { void }
     def run
       lexer = Lexer.new
 
@@ -34,5 +38,6 @@ module Monkey
         puts
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end

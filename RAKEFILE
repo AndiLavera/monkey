@@ -1,6 +1,5 @@
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
-# require 'rubocop-sorbet'
 
 namespace 'test' do
   desc 'Run all tests'
@@ -26,6 +25,7 @@ namespace 'test' do
   end
 end
 
+desc 'Runs rubocop'
 task :lint do
   RuboCop::RakeTask.new(:rubocop) do |t|
     t.options = ['--display-cop-names']
@@ -38,4 +38,14 @@ task :lint do
   end
 
   Rake::Task['rubocop'].execute
+end
+
+desc 'Runs sorbet typechecker'
+task :tc do
+  sh 'bundle exec srb tc'
+end
+
+desc 'Runs sorbet typechecker with auto-fixer'
+task :tca do
+  sh 'bundle exec srb tc -a'
 end

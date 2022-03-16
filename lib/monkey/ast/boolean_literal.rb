@@ -1,13 +1,14 @@
-# typed: true
+# typed: strict
 # frozen_string_literal: true
 
 module Monkey
   module AST
     class BooleanLiteral
+      extend T::Sig
+
       include Expression
 
-      # @param token [Token]
-      # @param value [Boolean]
+      sig { params(token: Token, value: T::Boolean).void }
       def initialize(token:, value:)
         super(token: token)
         @value = value
