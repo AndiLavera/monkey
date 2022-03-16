@@ -10,7 +10,7 @@ module Monkey
     # @param input [String]
     # @param position [Integer]
     # @param read_position [Integer]
-    # @param current_character [String]
+    # @param current_character [String, Integer]
     def initialize(
       input: '',
       position: 0,
@@ -25,6 +25,10 @@ module Monkey
       read_char!
     end
 
+    # @param input [String]
+    # @param position [Integer]
+    # @param read_position [Integer]
+    # @param current_character [String, Integer]
     def reset!(
       input: '',
       position: 0,
@@ -105,14 +109,14 @@ module Monkey
     # rubocop:enable Metrics/PerceivedComplexity
 
     def eof?
-      curr_char == EOF_MARKER
+      read_position >= input.size
     end
 
     private
 
     # @return input [String]
+    # @return current_character [String, Integer]
     # @return read_position [Integer]
-    # @return current_character [String]
     # @return position [Integer]
     attr_reader :input, :current_character,
                 :read_position, :position
@@ -131,13 +135,9 @@ module Monkey
       input[start_pos...position]
     end
 
-    # @return [void]
+    # @return [String, Integer]
     def read_char
-      self.curr_char = if read_position >= input.size
-                         EOF_MARKER
-                       else
-                         input[read_position]
-                       end
+      self.curr_char = eof? ? EOF_MARKER : input[read_position]
     end
 
     # @return [void]
@@ -166,11 +166,13 @@ module Monkey
       ["\n", "\t", ' ', "\r"].include? curr_char
     end
 
-    # @return [String]
+    # @return [String, Integer]
     def curr_char
-      @current_character
+      current_character
     end
 
+    # @param other [String, Integer]
+    # @return [String, Integer]
     def curr_char=(other)
       @current_character = other
     end
