@@ -1,3 +1,4 @@
+# typed: strict
 # frozen_string_literal: true
 
 require 'monkey/ast/node'
@@ -18,12 +19,15 @@ require 'monkey/ast/block_statement'
 module Monkey
   module AST
     class Program
+      extend T::Sig
+
       # @param [Array<AST::Node>]
       def initialize(statements = [])
         @statements = statements
       end
 
       # @return [String]
+      sig { returns(String) }
       def to_s
         @statements.map(&:to_s).join(' ')
       end

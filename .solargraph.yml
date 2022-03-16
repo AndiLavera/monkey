@@ -10,7 +10,7 @@ domains: []
 reporters:
   - rubocop
   - require_not_found
-  - typecheck:strict
+  # - typecheck:strict
 formatter:
   rubocop:
     cops: safe
