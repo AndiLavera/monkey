@@ -5,8 +5,9 @@ require_relative '../spec_helper'
 module Monkey
   describe Lexer do
     input = "
-let five = 5;
-let ten = 10;
+let snake_five = 5;
+let camelTen = 10;
+let TypeName = 1;
 
 let add = fn(x, y) {
   x + y;
@@ -28,14 +29,19 @@ if (5 < 10) {
 
     tokens = [
       Token.new(Token::LET, 'let'),
-      Token.new(Token::IDENTIFIER, 'five'),
+      Token.new(Token::IDENTIFIER, 'snake_five'),
       Token.new(Token::ASSIGN, '='),
       Token.new(Token::INT, '5'),
       Token.new(Token::SEMICOLON, ';'),
       Token.new(Token::LET, 'let'),
-      Token.new(Token::IDENTIFIER, 'ten'),
+      Token.new(Token::IDENTIFIER, 'camelTen'),
       Token.new(Token::ASSIGN, '='),
       Token.new(Token::INT, '10'),
+      Token.new(Token::SEMICOLON, ';'),
+      Token.new(Token::LET, 'let'),
+      Token.new(Token::IDENTIFIER, 'TypeName'),
+      Token.new(Token::ASSIGN, '='),
+      Token.new(Token::INT, '1'),
       Token.new(Token::SEMICOLON, ';'),
       Token.new(Token::LET, 'let'),
       Token.new(Token::IDENTIFIER, 'add'),
@@ -107,7 +113,7 @@ if (5 < 10) {
       lexer = Monkey::Lexer.new(input: input)
 
       tokens.each do |token|
-        expect(token == lexer.next_token).to eq(true)
+        expect(lexer.next_token).to eq(token)
       end
     end
   end

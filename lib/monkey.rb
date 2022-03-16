@@ -1,6 +1,8 @@
-require_relative './monkey/token'
-require_relative './monkey/lexer'
+# frozen_string_literal: true
+
+require 'monkey/lexer'
+require 'monkey/ast'
+require 'monkey/version'
 
 module Monkey
-  VERSION = '0.0.1'
 end

@@ -10,22 +10,6 @@ type Expression interface {
 	expressionNode()
 }
 
-type ExpressionStatement struct {
-	Token      token.Token // the first token of the expression
-	Expression Expression
-}
-
-func (es *ExpressionStatement) statementNode()       {}
-func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
-
-func (es *ExpressionStatement) String() string {
-	if es.Expression != nil {
-		return es.Expression.String()
-	}
-
-	return ""
-}
-
 type PrefixExpression struct {
 	Token    token.Token // The prefix token, e.g. !
 	Operator string

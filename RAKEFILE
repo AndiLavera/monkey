@@ -1,4 +1,5 @@
 require 'rspec/core/rake_task'
+require 'rubocop/rake_task'
 
 namespace 'test' do
   desc 'Run all tests'
@@ -7,11 +8,27 @@ namespace 'test' do
     Rake::Task['spec'].execute
   end
 
-  desc 'Run tests for tokenizer'
-  task :token do
+  desc 'Run tests for lexer'
+  task :lexer do
     RSpec::Core::RakeTask.new(:spec) do |t|
-      t.pattern = Dir.getwd + '/spec/token/*_spec.rb'
+      t.pattern = Dir.getwd + '/spec/lexer/*_spec.rb'
     end
     Rake::Task['spec'].execute
   end
+
+  desc 'Run tests for lexer'
+  task :ast do
+    RSpec::Core::RakeTask.new(:spec) do |t|
+      t.pattern = Dir.getwd + '/spec/ast/*_spec.rb'
+    end
+    Rake::Task['spec'].execute
+  end
+end
+
+task :lint do
+  RuboCop::RakeTask.new(:rubocop) do |t|
+    t.options = ['--display-cop-names']
+  end
+
+  Rake::Task['rubocop'].execute
 end

@@ -1,6 +1,9 @@
-require_relative './token'
+# frozen_string_literal: true
+
+require 'monkey/token'
 
 module Monkey
+  # rubocop:disable Metrics/ClassLength
   class Lexer
     # @param input [String]
     # @param position [Integer]
@@ -20,6 +23,10 @@ module Monkey
       read_char
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def next_token
       skip_whitespace
 
@@ -49,14 +56,14 @@ module Monkey
               when Token::GT
                 Token.new Token::GT, curr_char
               when Token::BANG
-                if peek_char == Token::ASSIGN
+                if peek_char_assign?
                   read_char
                   Token.new Token::NOT_EQ, Token::NOT_EQ
                 else
                   Token.new Token::BANG, curr_char
                 end
               when Token::ASSIGN
-                if peek_char == Token::ASSIGN
+                if peek_char_assign?
                   read_char
                   Token.new Token::EQ, Token::EQ
                 else
@@ -78,8 +85,12 @@ module Monkey
       read_char
       token
     end
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/PerceivedComplexity
 
-    # private
+    private
 
     # @return input [String]
     # @return read_position [Integer]
@@ -120,12 +131,13 @@ module Monkey
 
     # @return [Boolean]
     def letter?
-      !!curr_char.match(/[a-zA-Z]/)
+      !!curr_char.match(/[_a-zA-Z]/)
     end
 
     # @return [Boolean]
     def digit?
-      !!curr_char.match(/[0-9]/)
+      # TODO: /[0-9]/ ?
+      !!curr_char.match(/^(\d*[.\d]+)/)
     end
 
     # @return [Boolean]
@@ -151,5 +163,10 @@ module Monkey
       @position = @read_position
       @read_position += 1
     end
+
+    def peek_char_assign?
+      peek_char == Token::ASSIGN
+    end
   end
+  # rubocop:enable Metrics/ClassLength
 end

@@ -41,8 +41,8 @@ module Monkey
     KEYWORDS = {
       'fn' => FUNCTION,
       'let' => LET,
-      'true' => TRUE,
-      'false' => FALSE,
+      'true' => TRUE, # rubocop:disable Lint/DeprecatedConstants
+      'false' => FALSE, # rubocop:disable Lint/DeprecatedConstants
       'if' => IF,
       'else' => ELSE,
       'return' => RETURN
@@ -52,8 +52,8 @@ module Monkey
     attr_reader :type, :literal
 
     # Tries to find the language defined keyword otherwise returns the `identifier` keyword.
-    # @param input [String] The user's input
-    # @return [String] Type of identifier of an inputted string.
+    # @param input [String] The user's written identifier
+    # @return [String] Monkey language keyword or user defined identifier
     def self.lookup_keyword(input)
       KEYWORDS[input] || IDENTIFIER
     end
