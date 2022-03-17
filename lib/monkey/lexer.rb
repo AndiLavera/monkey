@@ -15,19 +15,19 @@ module Monkey
       params(
         input: String,
         position: Integer,
-        read_position: Integer,
+        next_position: Integer,
         current_character: String
       ).void
     end
     def initialize(
       input: '',
       position: 0,
-      read_position: 0,
+      next_position: 0,
       current_character: ''
     )
       @input = input
       @position = position
-      @read_position = read_position
+      @next_position = next_position
       @current_character = current_character
 
       read_char!
@@ -39,19 +39,19 @@ module Monkey
       params(
         input: String,
         position: Integer,
-        read_position: Integer,
+        next_position: Integer,
         current_character: String
       ).void
     end
     def reset!(
       input: '',
       position: 0,
-      read_position: 0,
+      next_position: 0,
       current_character: ''
     )
       @input = input.empty? ? @input : input
       @position = position
-      @read_position = read_position
+      @next_position = next_position
       @current_character = current_character
 
       read_char!
@@ -138,7 +138,7 @@ module Monkey
     # ```
     sig { returns(T::Boolean) }
     def finished?
-      read_position > input.size + 1
+      next_position > input.size + 1
     end
 
     private
@@ -147,32 +147,44 @@ module Monkey
     attr_reader :input
 
     sig { returns(Integer) }
-    attr_reader :read_position, :position
+    attr_reader :next_position, :position
 
-    # Runs the `read_position` counter until the end of an identifier and returns that slice.
+    # Runs the `next_position` counter until the end of an identifier and returns that slice.
     sig { returns(String) }
     def read_identifier
       start_pos = position
       read_char! while letter?
 
-      input[start_pos..read_position].to_s
+      input[start_pos...position].to_s
     end
 
-    # Runs the `read_position` counter until the end of an digit and returns that slice.
+    # Runs the `next_position` counter until the end of an digit and returns that slice.
     sig { returns(String) }
     def read_number
       start_pos = position
       read_char! while digit?
 
-      input[start_pos..read_position].to_s
+      input[start_pos...position].to_s
     end
 
     # Sets `@current_character` to the character in the `input`.
     # Increments positions
     sig { void }
     def read_char!
-      self.curr_char = eof? ? EOF_MARKER : read_current_position
-      move_position!
+      self.curr_char = eof? ? EOF_MARKER : peek_char
+      next!
+    end
+
+    # Looks one character ahead
+    sig { returns(String) }
+    def peek_char
+      @input[@next_position].to_s # Convert `nil` to empty string
+    end
+
+    sig { returns(Integer) }
+    def next!
+      @position = @next_position
+      @next_position += 1
     end
 
     # Increments positions until we get to a non-whitespace character
@@ -183,13 +195,13 @@ module Monkey
 
     sig { returns(T::Boolean) }
     def letter?
-      !eof? && !!curr_char.match(/[_a-zA-Z]/)
+      !!curr_char.match(/[_a-zA-Z]/)
     end
 
     sig { returns(T::Boolean) }
     def digit?
       # TODO: /[0-9]/ ?
-      !eof? && !!curr_char.match(/^(\d*[.\d]+)/)
+      !!curr_char.match(/^(\d*[.\d]+)/)
     end
 
     sig { returns(T::Boolean) }
@@ -208,31 +220,14 @@ module Monkey
       @current_character = other
     end
 
-    # Looks one character ahead
-    sig { returns(String) }
-    def peek_char
-      @input[@read_position].to_s # Convert `nil` to empty string
-    end
-
-    sig { returns(Integer) }
-    def move_position!
-      @position = @read_position
-      @read_position += 1
-    end
-
     sig { returns(T::Boolean) }
     def peek_char_assign?
       peek_char == Token::ASSIGN
     end
 
-    sig { returns(String) }
-    def read_current_position
-      input[read_position].to_s
-    end
-
     sig { returns(T::Boolean) }
     def eof?
-      read_position >= input.size
+      next_position >= input.size
     end
   end
   # rubocop:enable Metrics/ClassLength

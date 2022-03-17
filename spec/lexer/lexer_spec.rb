@@ -113,6 +113,8 @@ if (5 < 10) {
     it 'returns the proper next token' do
       lexer = Monkey::Lexer.new(input: input)
 
+      # byebug
+
       tokens.each do |token|
         expect(lexer.next_token!).to eq(token)
       end
