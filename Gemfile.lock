@@ -27,6 +27,7 @@ GEM
     parallel (1.21.0)
     parser (3.1.1.0)
       ast (~> 2.4.1)
+    prettier (2.0.0)
     racc (1.6.0)
     rainbow (3.1.1)
     rake (13.0.6)
@@ -86,6 +87,13 @@ GEM
     sorbet (0.5.9763)
       sorbet-static (= 0.5.9763)
     sorbet-runtime (0.5.9763)
+    sorbet-static (0.5.9763-universal-darwin-14)
+    sorbet-static (0.5.9763-universal-darwin-15)
+    sorbet-static (0.5.9763-universal-darwin-16)
+    sorbet-static (0.5.9763-universal-darwin-17)
+    sorbet-static (0.5.9763-universal-darwin-18)
+    sorbet-static (0.5.9763-universal-darwin-19)
+    sorbet-static (0.5.9763-universal-darwin-20)
     sorbet-static (0.5.9763-universal-darwin-21)
     sorbet-static (0.5.9763-x86_64-linux)
     thor (1.2.1)
@@ -105,6 +113,7 @@ PLATFORMS
 DEPENDENCIES
   byebug (~> 11.1)
   monkey!
+  prettier
   rake
   rspec
   rubocop

@@ -54,23 +54,18 @@ module Monkey
     sig { returns(String) }
     attr_reader :type, :literal
 
-    # Tries to find the language defined keyword otherwise returns the `identifier` keyword.
-    # @param input [String] The user's written identifier
-    # @return [String] Monkey language keyword or user defined identifier
     sig { params(input: String).returns(String) }
     def self.lookup_keyword(input)
       KEYWORDS[input] || IDENTIFIER
     end
 
-    # @param type [String] opts the options to create a message with.
-    # @param literal [String] The literal text input
     sig { params(type: String, literal: String).void }
     def initialize(type, literal)
       @type = type
       @literal = literal
     end
 
-    # @param other [Token]
+    # Compares a token with self for equality
     sig { params(other: Token).returns(T::Boolean) }
     def ==(other)
       type == other.type && literal == other.literal

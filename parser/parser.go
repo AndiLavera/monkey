@@ -241,8 +241,8 @@ func (parser *Parser) parseExpression(precedence int) ast.Expression {
 
 // Returns the precedence associated with the token type of peekToken. Returns the lowest precedence if one cannot be found.
 func (parser *Parser) peekPrecedence() int {
-	if parser, ok := precedences[parser.peekToken.Type]; ok {
-		return parser
+	if precedence, ok := precedences[parser.peekToken.Type]; ok {
+		return precedence
 	}
 
 	return LOWEST

@@ -4,7 +4,7 @@ require File.expand_path('lib/monkey/version', File.dirname(__FILE__))
 
 Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2.7.0'
+  s.required_ruby_version = '>= 2.6.0'
 
   s.name         = 'monkey'
   s.version      = Monkey::VERSION

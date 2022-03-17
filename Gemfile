@@ -13,6 +13,7 @@ gem 'solargraph', require: false
 gem 'rubocop-sorbet', require: false
 gem 'sorbet'
 gem 'unparser', "~> 0.6.4", require: false
+gem 'prettier'
 
 # group :development, :test do
 

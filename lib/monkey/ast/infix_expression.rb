@@ -8,16 +8,22 @@ module Monkey
 
       include Expression
 
-      sig { params(token: Token, operator: String, right: Expression).void }
-      def initialize(token:, operator:, right:)
+      sig do
+        params(
+          token: Token, operator: String,
+          left: Expression, right: Expression
+        ).void
+      end
+      def initialize(token:, operator:, left:, right:)
         super(token: token)
         @operator = operator
+        @left = left
         @right = right
       end
 
       sig { returns(String) }
       def to_s
-        "(#{@operator}#{@right}})"
+        "(#{@left} #{@operator} #{@right})"
       end
     end
   end

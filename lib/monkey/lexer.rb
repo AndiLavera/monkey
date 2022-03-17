@@ -66,8 +66,7 @@ module Monkey
 
     sig { returns(Token) }
     def next_token!
-      skip_whitespace!
-      # Clear \n at EOF before we check `eof?`
+      skip_whitespace! # Clear \n at EOF before we check `eof?`
       return finalize! if eof?
 
       token = case curr_char

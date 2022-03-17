@@ -170,3 +170,6 @@ Style/AccessorGrouping:
 Layout/HashAlignment:
   Enabled: true
   EnforcedHashRocketStyle: table
+
+AllCops:
+  TargetRubyVersion: 2.7.0
