@@ -21,6 +21,9 @@ module Monkey
     class Program
       extend T::Sig
 
+      sig { returns(T::Array[Node]) }
+      attr_reader :statements
+
       sig { params(statements: T::Array[Node]).void }
       def initialize(statements = [])
         @statements = statements

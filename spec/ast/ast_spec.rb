@@ -6,14 +6,14 @@ require_relative '../spec_helper'
 module Monkey
   describe AST do
     program = AST::Program.new [AST::LetStatement.new(
-      token: Token.new(Token::LET, 'let'),
-      identifier: AST::Identifier.new(
-        token: Token.new(Token::IDENTIFIER, 'myVar'),
-        value: 'myVar'
+      Token.new(Token::LET, 'let'),
+      AST::Identifier.new(
+        Token.new(Token::IDENTIFIER, 'myVar'),
+        'myVar'
       ),
-      expression: AST::Identifier.new(
-        token: Token.new(Token::IDENTIFIER, 'anotherVar'),
-        value: 'anotherVar'
+      AST::Identifier.new(
+        Token.new(Token::IDENTIFIER, 'anotherVar'),
+        'anotherVar'
       )
     )]
 

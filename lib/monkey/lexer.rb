@@ -29,6 +29,7 @@ module Monkey
       @position = position
       @next_position = next_position
       @current_character = current_character
+      @finished = T.let(false, T::Boolean)
 
       read_char!
     end
@@ -53,6 +54,7 @@ module Monkey
       @position = position
       @next_position = next_position
       @current_character = current_character
+      @finished = false
 
       read_char!
     end
@@ -62,12 +64,11 @@ module Monkey
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
 
-    # TODO: Will keep incrementing positions when returning EOF tokens. Would have to fix `.finished?` as well.
     sig { returns(Token) }
     def next_token!
-      return eof if eof?
-
       skip_whitespace!
+      # Clear \n at EOF before we check `eof?`
+      return finalize! if eof?
 
       token = case curr_char
               when Token::SEMICOLON
@@ -138,7 +139,7 @@ module Monkey
     # ```
     sig { returns(T::Boolean) }
     def finished?
-      @next_position > @input.size + 1
+      @finished
     end
 
     private
@@ -164,7 +165,7 @@ module Monkey
     # Sets `@current_character` to next character & increments positions
     sig { void }
     def read_char!
-      self.curr_char = eof? ? EOF_MARKER : peek_char
+      self.curr_char = peek_eof? ? EOF_MARKER : peek_char
       next!
     end
 
@@ -188,13 +189,13 @@ module Monkey
 
     sig { returns(T::Boolean) }
     def letter?
-      !!curr_char.match(/[_a-zA-Z]/)
+      !eof? && !!curr_char.match(/[_a-zA-Z]/) # infinite loop from 'EOF' matching
     end
 
     sig { returns(T::Boolean) }
     def digit?
       # TODO: /[0-9]/ ?
-      !!curr_char.match(/^(\d*[.\d]+)/)
+      !eof? && !!curr_char.match(/^(\d*[.\d]+)/)
     end
 
     sig { returns(T::Boolean) }
@@ -219,12 +220,18 @@ module Monkey
     end
 
     sig { returns(Token) }
-    def eof
+    def finalize!
+      @finished = true
       Token.new Token::EOF, ''
     end
 
     sig { returns(T::Boolean) }
     def eof?
+      @input[@position].nil?
+    end
+
+    sig { returns(T::Boolean) }
+    def peek_eof?
       @input[@next_position].nil?
     end
   end

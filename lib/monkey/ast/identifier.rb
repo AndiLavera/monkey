@@ -9,7 +9,7 @@ module Monkey
       include Expression
 
       sig { params(token: Token, value: String).void }
-      def initialize(token:, value:)
+      def initialize(token, value)
         super(token: token)
         @value = value
       end

@@ -163,6 +163,10 @@ Performance/StringInclude: # new in 1.7
 Performance/Sum: # new in 1.8
   Enabled: true
 
-# Sorbet
+# Me
 Style/AccessorGrouping:
   Enabled: false
+
+Layout/HashAlignment:
+  Enabled: true
+  EnforcedHashRocketStyle: table

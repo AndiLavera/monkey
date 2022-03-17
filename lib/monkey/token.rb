@@ -42,12 +42,12 @@ module Monkey
     RETURN   = 'RETURN'
 
     KEYWORDS = T.let({
-      'fn' => FUNCTION,
-      'let' => LET,
-      'true' => TRUE, # rubocop:disable Lint/DeprecatedConstants
-      'false' => FALSE, # rubocop:disable Lint/DeprecatedConstants
-      'if' => IF,
-      'else' => ELSE,
+      'fn'     => FUNCTION,
+      'let'    => LET,
+      'true'   => TRUE, # rubocop:disable Lint/DeprecatedConstants
+      'false'  => FALSE, # rubocop:disable Lint/DeprecatedConstants
+      'if'     => IF,
+      'else'   => ELSE,
       'return' => RETURN
     }.freeze, T::Hash[String, String])
 
