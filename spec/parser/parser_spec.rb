@@ -46,6 +46,12 @@ module Monkey
       end
     end
 
+    def check_consequence_size(consequence, _size)
+      if consequence.size != 1
+        thorw "consequence is not 1 statement. got=#{consequence.size}"
+      end
+    end
+
     def test_literal_expression(expression, value)
       if value.instance_of?(String)
         test_identifier expression, value
@@ -66,7 +72,7 @@ module Monkey
         got=#{identifier.value}"
       end
 
-      return if identifier.token_literal == value
+      return true if identifier.token_literal == value
 
       throw "AST::Identifier#token_literal not '#{value}' \
       got=#{identifier.token_literal}"
@@ -80,7 +86,7 @@ module Monkey
         got=#{int_literal.value}"
       end
 
-      return if int_literal.token_literal == value.to_s
+      return true if int_literal.token_literal == value.to_s
 
       throw "AST::IntegerLiteral#token_literal not '#{value}' \
       got=#{int_literal.token_literal}"
@@ -94,10 +100,24 @@ module Monkey
         got=#{bool_literal.value}"
       end
 
-      return if bool_literal.token_literal == value.to_s
+      return true if bool_literal.token_literal == value.to_s
 
       throw "AST::BooleanLiteral#token_literal not '#{value}' \
       got=#{bool_literal.token_literal}"
+    end
+
+    def test_infix_expression(expression, left, operator, right)
+      expect(expression.instance_of?(AST::InfixExpression)).to be true
+
+      test_literal_expression expression.left, left
+
+      if expression.operator != operator
+        throw "AST#InfixExpression.operator is not '#{operator}'. \
+        got=#{expression.operator}"
+      end
+
+      test_literal_expression expression.right, right
+      true
     end
 
     it 'parse with proper precedence' do
@@ -404,6 +424,63 @@ module Monkey
 
         test_literal_expression expression.right, infix_exp['right']
       end
+    end
+
+    it 'can parse if expressions' do
+      lexer = Monkey::Lexer.new(input: 'if (x < y) { x }')
+      parser = described_class.new lexer
+      program = parser.parse_program!
+
+      check_parser_errors parser
+      check_statements_size program, 1
+
+      statement = program.statements.first
+      expect(statement.instance_of?(AST::ExpressionStatement)).to be true
+
+      if_expression = statement.expression
+      expect(if_expression.instance_of?(AST::IfExpression)).to be true
+
+      test_infix_expression if_expression.condition, 'x', '<', 'y'
+
+      check_consequence_size if_expression.consequence.statements, 1
+
+      consequence = if_expression.consequence.statements.first
+      expect(consequence.instance_of?(AST::ExpressionStatement)).to be true
+
+      test_identifier consequence.expression, 'x'
+
+      expect(if_expression.alternative).to be_nil
+    end
+
+    it 'can parse if else expressions' do
+      lexer = Monkey::Lexer.new(input: 'if (x < y) { x } else { y }')
+      parser = described_class.new lexer
+      program = parser.parse_program!
+
+      check_parser_errors parser
+      check_statements_size program, 1
+
+      statement = program.statements.first
+      expect(statement.instance_of?(AST::ExpressionStatement)).to be true
+
+      if_expression = statement.expression
+      expect(if_expression.instance_of?(AST::IfExpression)).to be true
+
+      test_infix_expression if_expression.condition, 'x', '<', 'y'
+
+      check_consequence_size if_expression.consequence.statements, 1
+
+      consequence = if_expression.consequence.statements.first
+      expect(consequence.instance_of?(AST::ExpressionStatement)).to be true
+
+      test_identifier consequence.expression, 'x'
+
+      check_consequence_size if_expression.alternative.statements, 1
+
+      alternative = if_expression.alternative.statements.first
+      expect(alternative.instance_of?(AST::ExpressionStatement)).to be true
+
+      test_identifier alternative.expression, 'y'
     end
   end
 end

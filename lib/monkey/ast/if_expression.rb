@@ -5,8 +5,16 @@ module Monkey
   module AST
     class IfExpression
       extend T::Sig
-
       include Expression
+
+      sig { returns(Expression) }
+      attr_reader :condition
+
+      sig { returns(BlockStatement) }
+      attr_reader :consequence
+
+      sig { returns(T.nilable(BlockStatement)) }
+      attr_reader :alternative
 
       sig do
         params(

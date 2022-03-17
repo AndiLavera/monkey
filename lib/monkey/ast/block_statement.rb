@@ -7,6 +7,9 @@ module Monkey
       extend T::Sig
       include Statement
 
+      sig { returns(T::Array[Statement]) }
+      attr_reader :statements
+
       sig do
         params(
           token: Token,

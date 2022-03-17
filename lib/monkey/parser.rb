@@ -115,7 +115,7 @@ module Monkey
 
       left_expression = prefix.bind_call(self)
 
-      while  precedence < peek_precedence && !peek_token_is?(Token::SEMICOLON)
+      while precedence < peek_precedence && !peek_token_is?(Token::SEMICOLON)
         infix = InfixDispatcher[@peek_token.type]
         return left_expression if infix.nil?
 
@@ -174,7 +174,7 @@ module Monkey
       condition = parse_expression LOWEST
 
       return nil unless expect_peek! Token::R_PAREN
-      return nil unless expect_peek! Token::R_BRACE
+      return nil unless expect_peek! Token::L_BRACE
 
       consequence = parse_block_statement!
 
@@ -198,6 +198,8 @@ module Monkey
     def parse_block_statement!
       token = @curr_token
       statements = T.let([], T::Array[AST::Statement])
+
+      next_token!
 
       until curr_token_is?(Token::R_BRACE) || curr_token_is?(Token::EOF)
         statement = parse_statement
