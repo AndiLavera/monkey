@@ -65,6 +65,8 @@ module Monkey
     # TODO: Will keep incrementing positions when returning EOF tokens. Would have to fix `.finished?` as well.
     sig { returns(Token) }
     def next_token!
+      return eof if eof?
+
       skip_whitespace!
 
       token = case curr_char
@@ -106,8 +108,6 @@ module Monkey
                 else
                   Token.new(Token::ASSIGN, curr_char)
                 end
-              when EOF_MARKER
-                Token.new(Token::EOF, '')
               else
                 if letter?
                   word = read_identifier
@@ -138,37 +138,30 @@ module Monkey
     # ```
     sig { returns(T::Boolean) }
     def finished?
-      next_position > input.size + 1
+      @next_position > @input.size + 1
     end
 
     private
 
-    sig { returns(String) }
-    attr_reader :input
-
-    sig { returns(Integer) }
-    attr_reader :next_position, :position
-
     # Runs the `next_position` counter until the end of an identifier and returns that slice.
     sig { returns(String) }
     def read_identifier
-      start_pos = position
+      start_pos = @position
       read_char! while letter?
 
-      input[start_pos...position].to_s
+      @input[start_pos...@position].to_s
     end
 
     # Runs the `next_position` counter until the end of an digit and returns that slice.
     sig { returns(String) }
     def read_number
-      start_pos = position
+      start_pos = @position
       read_char! while digit?
 
-      input[start_pos...position].to_s
+      @input[start_pos...@position].to_s
     end
 
-    # Sets `@current_character` to the character in the `input`.
-    # Increments positions
+    # Sets `@current_character` to next character & increments positions
     sig { void }
     def read_char!
       self.curr_char = eof? ? EOF_MARKER : peek_char
@@ -225,9 +218,14 @@ module Monkey
       peek_char == Token::ASSIGN
     end
 
+    sig { returns(Token) }
+    def eof
+      Token.new Token::EOF, ''
+    end
+
     sig { returns(T::Boolean) }
     def eof?
-      next_position >= input.size
+      @input[@next_position].nil?
     end
   end
   # rubocop:enable Metrics/ClassLength

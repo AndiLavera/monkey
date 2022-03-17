@@ -5,8 +5,7 @@ require_relative '../spec_helper'
 
 module Monkey
   describe Lexer do
-    input = "
-let snake_five = 5;
+    input = "let snake_five = 5;
 let camelTen = 10;
 let TypeName = 1;
 
