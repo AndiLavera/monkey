@@ -5,8 +5,13 @@ module Monkey
   module AST
     class InfixExpression
       extend T::Sig
-
       include Expression
+
+      sig { returns(String) }
+      attr_reader :operator
+
+      sig { returns(Expression) }
+      attr_reader :left, :right
 
       sig do
         params(

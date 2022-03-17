@@ -5,8 +5,10 @@ module Monkey
   module AST
     class BooleanLiteral
       extend T::Sig
-
       include Expression
+
+      sig { returns(T::Boolean) }
+      attr_reader :value
 
       sig { params(token: Token, value: T::Boolean).void }
       def initialize(token:, value:)

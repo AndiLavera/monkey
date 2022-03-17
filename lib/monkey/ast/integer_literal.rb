@@ -5,8 +5,10 @@ module Monkey
   module AST
     class IntegerLiteral
       extend T::Sig
-
       include Expression
+
+      sig { returns(Integer) }
+      attr_reader :value
 
       sig { params(token: Token, value: Integer).void }
       def initialize(token:, value:)

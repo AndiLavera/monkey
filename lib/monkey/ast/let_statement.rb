@@ -7,7 +7,11 @@ module Monkey
       extend T::Sig
       include Statement
 
-      sig { params(token: Token, identifier: Identifier, expression: Expression).void }
+      sig { returns(Identifier) }
+      attr_reader :identifier
+
+      sig do
+ params(token: Token, identifier: Identifier, expression: Expression).void end
       def initialize(token, identifier, expression)
         super(token: token)
         @identifier = identifier

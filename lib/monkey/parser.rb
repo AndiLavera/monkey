@@ -25,9 +25,12 @@ module Monkey
       Token::ASTERISK => PRODUCT_DIVIDE
     }.freeze, T::Hash[String, Integer])
 
+    sig { returns(T::Array[String]) }
+    attr_reader :errors
+
     sig { params(lexer: Lexer).void }
     def initialize(lexer)
-      @lexer = lexer
+      @lexer         = lexer
       @errors        = T.let([], T::Array[String])
       # Read two tokens, so curToken and peekToken are both set
       @curr_token    = T.let(@lexer.next_token!, Token)
@@ -156,12 +159,11 @@ module Monkey
       next_token!
       expression = parse_expression LOWEST
 
-      return nil if expect_peek! Token::R_PAREN
+      return nil unless expect_peek! Token::R_PAREN
 
       expression
     end
 
-    # rubocop:disable Metrics/MethodLength
     sig { returns(T.nilable(AST::IfExpression)) }
     def parse_if_expression!
       token = @curr_token
@@ -208,7 +210,6 @@ module Monkey
         statements: statements
       )
     end
-    # rubocop:enable Metrics/MethodLength
 
     sig { returns(AST::Identifier) }
     def parse_identifier

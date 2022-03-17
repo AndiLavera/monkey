@@ -110,7 +110,7 @@ if (5 < 10) {
     ]
 
     it 'returns the proper next token' do
-      lexer = Monkey::Lexer.new(input: input)
+      lexer = described_class.new(input: input)
 
       count = 0
       until lexer.finished?

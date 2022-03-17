@@ -13,8 +13,7 @@ module Monkey
       new.run
     end
 
-    # rubocop:disable Metrics/MethodLength
-    sig { void }
+        sig { void }
     def run
       lexer = Lexer.new
 
@@ -34,6 +33,5 @@ module Monkey
         puts
       end
     end
-    # rubocop:enable Metrics/MethodLength
-  end
+      end
 end

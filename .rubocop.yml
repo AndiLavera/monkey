@@ -164,12 +164,25 @@ Performance/Sum: # new in 1.8
   Enabled: true
 
 # Me
-Style/AccessorGrouping:
+Style/AccessorGrouping: # Sorbet doesn't like multiple sig types on 1 line
   Enabled: false
 
 Layout/HashAlignment:
   Enabled: true
   EnforcedHashRocketStyle: table
+
+Layout/LineLength:
+  Max: 80
+  Enabled: true
+
+# TODO: Bring back to default?
+Metrics/MethodLength:
+  Enabled: true
+  Max: 20
+
+# TODO:
+Rspec/ExampleLength:
+  Enabled: false
 
 AllCops:
   TargetRubyVersion: 2.7.0

@@ -5,8 +5,10 @@ module Monkey
   module AST
     class Identifier
       extend T::Sig
-
       include Expression
+
+      sig { returns(String) }
+      attr_reader :value
 
       sig { params(token: Token, value: String).void }
       def initialize(token, value)
