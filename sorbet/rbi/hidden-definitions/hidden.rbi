@@ -2736,8 +2736,66 @@ class Byebug::WidthSetting
   DEFAULT = ::T.let(nil, ::T.untyped)
 end
 
+module CGI::HtmlExtension
+  def a(href=T.unsafe(nil)); end
+
+  def base(href=T.unsafe(nil)); end
+
+  def blockquote(cite=T.unsafe(nil)); end
+
+  def caption(align=T.unsafe(nil)); end
+
+  def checkbox(name=T.unsafe(nil), value=T.unsafe(nil), checked=T.unsafe(nil)); end
+
+  def checkbox_group(name=T.unsafe(nil), *values); end
+
+  def file_field(name=T.unsafe(nil), size=T.unsafe(nil), maxlength=T.unsafe(nil)); end
+
+  def form(method=T.unsafe(nil), action=T.unsafe(nil), enctype=T.unsafe(nil)); end
+
+  def hidden(name=T.unsafe(nil), value=T.unsafe(nil)); end
+
+  def html(attributes=T.unsafe(nil)); end
+
+  def image_button(src=T.unsafe(nil), name=T.unsafe(nil), alt=T.unsafe(nil)); end
+
+  def img(src=T.unsafe(nil), alt=T.unsafe(nil), width=T.unsafe(nil), height=T.unsafe(nil)); end
+
+  def multipart_form(action=T.unsafe(nil), enctype=T.unsafe(nil)); end
+
+  def password_field(name=T.unsafe(nil), value=T.unsafe(nil), size=T.unsafe(nil), maxlength=T.unsafe(nil)); end
+
+  def popup_menu(name=T.unsafe(nil), *values); end
+
+  def radio_button(name=T.unsafe(nil), value=T.unsafe(nil), checked=T.unsafe(nil)); end
+
+  def radio_group(name=T.unsafe(nil), *values); end
+
+  def reset(value=T.unsafe(nil), name=T.unsafe(nil)); end
+
+  def scrolling_list(name=T.unsafe(nil), *values); end
+
+  def submit(value=T.unsafe(nil), name=T.unsafe(nil)); end
+
+  def text_field(name=T.unsafe(nil), value=T.unsafe(nil), size=T.unsafe(nil), maxlength=T.unsafe(nil)); end
+
+  def textarea(name=T.unsafe(nil), cols=T.unsafe(nil), rows=T.unsafe(nil)); end
+end
+
+module CGI::HtmlExtension
+end
+
 class Class
   def json_creatable?(); end
+end
+
+class Date
+  def infinite?(); end
+  VERSION = ::T.let(nil, ::T.untyped)
+end
+
+class Date::Infinity
+  def initialize(d=T.unsafe(nil)); end
 end
 
 class Delegator
@@ -2889,10 +2947,29 @@ class Dir
   def self.exists?(arg); end
 end
 
+module Docile
+  VERSION = ::T.let(nil, ::T.untyped)
+end
+
+module Docile::BacktraceFilter
+  FILTER_PATTERN = ::T.let(nil, ::T.untyped)
+end
+
+class Docile::FallbackContextProxy
+  NON_FALLBACK_METHODS = ::T.let(nil, ::T.untyped)
+  NON_PROXIED_INSTANCE_VARIABLES = ::T.let(nil, ::T.untyped)
+  NON_PROXIED_METHODS = ::T.let(nil, ::T.untyped)
+end
+
 class ERB
   def def_method(mod, methodname, fname=T.unsafe(nil)); end
 
   def def_module(methodname=T.unsafe(nil)); end
+end
+
+class ERB::Compiler::Scanner
+  DEFAULT_ETAGS = ::T.let(nil, ::T.untyped)
+  DEFAULT_STAGS = ::T.let(nil, ::T.untyped)
 end
 
 class Encoding
@@ -4142,6 +4219,96 @@ class MonitorMixin::ConditionVariable
   def initialize(monitor); end
 end
 
+class Monkey::AST::BlockStatement
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::BooleanLiteral
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::CallExpression
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::ExpressionStatement
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::FunctionLiteral
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::Identifier
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::IfExpression
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::InfixExpression
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::IntegerLiteral
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::LetStatement
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+module Monkey::AST::Node
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::PrefixExpression
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::Program
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::AST::ReturnStatement
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::Lexer
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::Parser
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::Repl
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
+class Monkey::Token
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
 class NameError
   include ::DidYouMean::Correctable
 end
@@ -4198,6 +4365,12 @@ class OptionParser::ParseError
   def additional(); end
 
   def additional=(additional); end
+end
+
+module Prettier
+  BINARY = ::T.let(nil, ::T.untyped)
+  PLUGIN = ::T.let(nil, ::T.untyped)
+  VERSION = ::T.let(nil, ::T.untyped)
 end
 
 class Proc
@@ -4723,6 +4896,12 @@ end
 
 class RDoc::TopLevel
   def initialize(absolute_name, relative_name=T.unsafe(nil)); end
+end
+
+module RSpec::Sorbet::Doubles
+  INLINE_DOUBLE_REGEX = ::T.let(nil, ::T.untyped)
+  TYPED_ARRAY_MESSAGE = ::T.let(nil, ::T.untyped)
+  VERIFYING_DOUBLE_OR_DOUBLE = ::T.let(nil, ::T.untyped)
 end
 
 class Racc::Parser
@@ -6262,6 +6441,47 @@ class Set
 
   def reset(); end
   InspectKey = ::T.let(nil, ::T.untyped)
+end
+
+module SimpleCov
+  VERSION = ::T.let(nil, ::T.untyped)
+end
+
+module SimpleCov::Configuration
+  DEFAULT_COVERAGE_CRITERION = ::T.let(nil, ::T.untyped)
+  SUPPORTED_COVERAGE_CRITERIA = ::T.let(nil, ::T.untyped)
+end
+
+module SimpleCov::ExitCodes
+  EXCEPTION = ::T.let(nil, ::T.untyped)
+  MAXIMUM_COVERAGE_DROP = ::T.let(nil, ::T.untyped)
+  MINIMUM_COVERAGE = ::T.let(nil, ::T.untyped)
+  SUCCESS = ::T.let(nil, ::T.untyped)
+end
+
+class SimpleCov::ExitCodes::MaximumCoverageDropCheck
+  MAX_DROP_ACCURACY = ::T.let(nil, ::T.untyped)
+end
+
+class SimpleCov::Formatter::HTMLFormatter
+  VERSION = ::T.let(nil, ::T.untyped)
+end
+
+class SimpleCov::LinesClassifier
+  COMMENT_LINE = ::T.let(nil, ::T.untyped)
+  NOT_RELEVANT = ::T.let(nil, ::T.untyped)
+  RELEVANT = ::T.let(nil, ::T.untyped)
+  WHITESPACE_LINE = ::T.let(nil, ::T.untyped)
+  WHITESPACE_OR_COMMENT_LINE = ::T.let(nil, ::T.untyped)
+end
+
+class SimpleCov::SourceFile
+  RUBY_FILE_ENCODING_MAGIC_COMMENT_REGEX = ::T.let(nil, ::T.untyped)
+  SHEBANG_REGEX = ::T.let(nil, ::T.untyped)
+end
+
+class SimpleCovJSONFormatter::ResultExporter
+  FILENAME = ::T.let(nil, ::T.untyped)
 end
 
 class SimpleDelegator

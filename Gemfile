@@ -22,5 +22,5 @@ gem 'unparser', '~> 0.6.4', require: false
 
 gem 'sorbet-runtime'
 gem 'rspec-sorbet'
-
+gem 'simplecov'
 gemspec

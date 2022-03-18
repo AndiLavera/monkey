@@ -1701,6 +1701,29 @@
 # wrong constant name unbundled_system
 # wrong constant name <Class:ThreadsTable>
 # wrong constant name <static-init>
+# wrong constant name a
+# wrong constant name base
+# wrong constant name blockquote
+# wrong constant name caption
+# wrong constant name checkbox
+# wrong constant name checkbox_group
+# wrong constant name file_field
+# wrong constant name form
+# wrong constant name hidden
+# wrong constant name html
+# wrong constant name image_button
+# wrong constant name img
+# wrong constant name multipart_form
+# wrong constant name password_field
+# wrong constant name popup_menu
+# wrong constant name radio_button
+# wrong constant name radio_group
+# wrong constant name reset
+# wrong constant name scrolling_list
+# wrong constant name submit
+# wrong constant name text_field
+# wrong constant name textarea
+# wrong constant name <static-init>
 # uninitialized constant CMath
 # uninitialized constant CMath
 # uninitialized constant CSV
@@ -1708,18 +1731,18 @@
 # wrong constant name json_creatable?
 # uninitialized constant Continuation
 # uninitialized constant Continuation
-# uninitialized constant Coverage
-# uninitialized constant Coverage
 # uninitialized constant DBM
 # uninitialized constant DBM
 # uninitialized constant DBMError
 # uninitialized constant DBMError
 # uninitialized constant DRb
-# Did you mean?  IRB
-#                ERB
+# Did you mean?  ERB
+#                IRB
 # uninitialized constant DRb
-# Did you mean?  IRB
-#                ERB
+# Did you mean?  ERB
+#                IRB
+# wrong constant name infinite?
+# wrong constant name initialize
 # wrong constant name class_name
 # wrong constant name class_names
 # wrong constant name corrections
@@ -2318,10 +2341,6 @@
 # wrong constant name <Class:Object>
 # uninitialized constant Observable
 # uninitialized constant Observable
-# uninitialized constant Open3
-# Did you mean?  OpenSSL
-# uninitialized constant Open3
-# Did you mean?  OpenSSL
 # uninitialized constant OpenSSL::Digest::DSS
 # uninitialized constant OpenSSL::Digest::DSS
 # uninitialized constant OpenSSL::Digest::DSS1
@@ -2333,9 +2352,9 @@
 # uninitialized constant OpenSSL::PKCS5::PKCS5Error
 # uninitialized constant OpenSSL::PKCS5::PKCS5Error
 # uninitialized constant OpenURI
-# Did you mean?  OpenStruct
+# Did you mean?  Open3
 # uninitialized constant OpenURI
-# Did you mean?  OpenStruct
+# Did you mean?  Open3
 # wrong constant name additional_message
 # wrong constant name get_candidates
 # wrong constant name additional
@@ -2352,7 +2371,9 @@
 # uninitialized constant PackageSpec
 # wrong constant name <Class:PackageSpec>
 # uninitialized constant PrettyPrint
+# Did you mean?  Prettier
 # uninitialized constant PrettyPrint
+# Did you mean?  Prettier
 # uninitialized constant Prime
 # uninitialized constant Prime
 # wrong constant name <<

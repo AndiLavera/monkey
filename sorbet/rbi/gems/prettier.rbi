@@ -5,9 +5,10 @@
 #
 # If you would like to make changes to this file, great! Please create the gem's shim here:
 #
-#   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/monkey/all/monkey.rbi
+#   https://github.com/sorbet/sorbet-typed/new/master?filename=lib/prettier/all/prettier.rbi
 #
-# monkey-0.0.1
+# prettier-2.0.0
 
-module Monkey
+module Prettier
+  def self.run(args); end
 end

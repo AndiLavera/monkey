@@ -17,7 +17,6 @@ module RSpec::Core::ShellEscape
   def self.shell_allows_unquoted_ids?; end
   def shell_allows_unquoted_ids?; end
 end
-
 class RSpec::Core::RakeTask < ::Rake::TaskLib
   include ::Rake::DSL
   include RSpec::Core::ShellEscape

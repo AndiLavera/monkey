@@ -19,14 +19,11 @@ module Rake
   def self.with_application(block_application = nil); end
   extend Rake::FileUtilsExt
 end
-
 module Rake::Version
 end
-
 class Module
   def rake_extension(method); end
 end
-
 class String
   def ext(newext = nil); end
   def pathmap(spec = nil, &block); end
@@ -34,16 +31,13 @@ class String
   def pathmap_partial(n); end
   def pathmap_replace(patterns, &block); end
 end
-
 module Rake::Win32
   def self.normalize(path); end
   def self.win32_system_dir; end
   def self.windows?; end
 end
-
 class Rake::Win32::Win32HomeError < RuntimeError
 end
-
 class Rake::LinkedList
   def ==(other); end
   def conj(item); end
@@ -59,39 +53,32 @@ class Rake::LinkedList
   def to_s; end
   include Enumerable
 end
-
 class Rake::LinkedList::EmptyLinkedList < Rake::LinkedList
   def empty?; end
   def initialize; end
   def self.cons(head, tail); end
 end
-
 class Rake::CpuCounter
   def count; end
   def count_with_default(default = nil); end
   def self.count; end
 end
-
 class Rake::Scope < Rake::LinkedList
   def path; end
   def path_with_task_name(task_name); end
   def trim(n); end
 end
-
 class Rake::Scope::EmptyScope < Rake::LinkedList::EmptyLinkedList
   def path; end
   def path_with_task_name(task_name); end
 end
-
 class Rake::TaskArgumentError < ArgumentError
 end
-
 class Rake::RuleRecursionOverflowError < StandardError
   def add_target(target); end
   def initialize(*args); end
   def message; end
 end
-
 module Rake::TaskManager
   def [](task_name, scopes = nil); end
   def add_location(task); end
@@ -124,11 +111,9 @@ module Rake::TaskManager
   def tasks_in_scope(scope); end
   def trace_rule(level, message); end
 end
-
 module Rake::Cloneable
   def initialize_copy(source); end
 end
-
 module FileUtils
   def create_shell_runner(cmd); end
   def ruby(*args, **options, &block); end
@@ -138,7 +123,6 @@ module FileUtils
   def sh_show_command(cmd); end
   def split_all(path); end
 end
-
 module Rake::FileUtilsExt
   def cd(*args, **options, &block); end
   def chdir(*args, **options, &block); end
@@ -183,7 +167,6 @@ module Rake::FileUtilsExt
   extend Rake::FileUtilsExt
   include FileUtils
 end
-
 class Rake::FileList
   def &(*args, &block); end
   def *(other); end
@@ -191,7 +174,7 @@ class Rake::FileList
   def -(*args, &block); end
   def <<(obj); end
   def <=>(*args, &block); end
-  def ==(other); end
+  def ==(array); end
   def [](*args, &block); end
   def []=(*args, &block); end
   def add(*filenames); end
@@ -345,7 +328,6 @@ class Rake::FileList
   def |(*args, &block); end
   include Rake::Cloneable
 end
-
 class Rake::Promise
   def chore; end
   def complete?; end
@@ -359,7 +341,6 @@ class Rake::Promise
   def value; end
   def work; end
 end
-
 class Rake::ThreadPool
   def __queue__; end
   def future(*args, &block); end
@@ -373,15 +354,12 @@ class Rake::ThreadPool
   def stat(event, data = nil); end
   def statistics; end
 end
-
 module Rake::PrivateReader
   def self.included(base); end
 end
-
 module Rake::PrivateReader::ClassMethods
   def private_reader(*names); end
 end
-
 class Rake::ThreadHistoryDisplay
   def initialize(stats); end
   def items; end
@@ -392,14 +370,11 @@ class Rake::ThreadHistoryDisplay
   extend Rake::PrivateReader::ClassMethods
   include Rake::PrivateReader
 end
-
 module Rake::TraceOutput
   def trace_on(out, *strings); end
 end
-
 class Rake::CommandLineOptionError < StandardError
 end
-
 class Rake::Application
   def add_import(fn); end
   def add_loader(ext, loader); end
@@ -464,16 +439,14 @@ class Rake::Application
   include Rake::TaskManager
   include Rake::TraceOutput
 end
-
 class Rake::PseudoStatus
-  def >>(other); end
+  def >>(n); end
   def exited?; end
   def exitstatus; end
   def initialize(code = nil); end
   def stopped?; end
   def to_i; end
 end
-
 class Rake::TaskArguments
   def [](index); end
   def each(&block); end
@@ -494,7 +467,6 @@ class Rake::TaskArguments
   def with_defaults(defaults); end
   include Enumerable
 end
-
 class Rake::InvocationChain < Rake::LinkedList
   def append(invocation); end
   def member?(invocation); end
@@ -502,18 +474,15 @@ class Rake::InvocationChain < Rake::LinkedList
   def self.append(invocation, chain); end
   def to_s; end
 end
-
 class Rake::InvocationChain::EmptyInvocationChain < Rake::LinkedList::EmptyLinkedList
   def append(invocation); end
   def member?(obj); end
   def to_s; end
 end
-
 module Rake::InvocationExceptionMixin
   def chain; end
   def chain=(value); end
 end
-
 class Rake::Task
   def actions; end
   def add_chain_to(exception, new_chain); end
@@ -571,9 +540,8 @@ class Rake::Task
   def timestamp; end
   def to_s; end
   def transform_comments(separator, &block); end
-  def |(other); end
+  def |(deps); end
 end
-
 class Rake::EarlyTime
   def <=>(other); end
   def self.allocate; end
@@ -584,23 +552,19 @@ class Rake::EarlyTime
   include Comparable
   include Singleton
 end
-
 class Rake::FileTask < Rake::Task
   def needed?; end
   def out_of_date?(stamp); end
   def self.scope_name(scope, task_name); end
   def timestamp; end
 end
-
 class Rake::FileCreationTask < Rake::FileTask
   def needed?; end
   def timestamp; end
 end
-
 class Rake::MultiTask < Rake::Task
   def invoke_prerequisites(task_args, invocation_chain); end
 end
-
 module Rake::DSL
   def cd(*args, **options, &block); end
   def chdir(*args, **options, &block); end
@@ -653,11 +617,9 @@ module Rake::DSL
   def when_writing(msg = nil); end
   include Rake::FileUtilsExt
 end
-
 class Rake::DefaultLoader
   def load(fn); end
 end
-
 class Rake::LateTime
   def <=>(other); end
   def self.allocate; end
@@ -668,18 +630,15 @@ class Rake::LateTime
   include Comparable
   include Singleton
 end
-
 class Rake::NameSpace
   def [](name); end
   def initialize(task_manager, scope_list); end
   def scope; end
   def tasks; end
 end
-
 module Rake::Backtrace
   def self.collapse(backtrace); end
 end
-
 class Rake::TaskLib
   include Rake::Cloneable
   include Rake::DSL
