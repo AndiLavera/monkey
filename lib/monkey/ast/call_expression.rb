@@ -10,7 +10,7 @@ module Monkey
       sig { returns(Expression) }
       attr_reader :function
 
-      sig { returns(T.nilable(T::Array[AST::Expression])) }
+      sig { returns(T::Array[AST::Expression]) }
       attr_reader :arguments
 
       sig do
@@ -20,12 +20,12 @@ module Monkey
       def initialize(token:, function:, arguments:)
         super(token: token)
         @function = function
-        @arguments = arguments
+        @arguments = T.let(arguments || [], T::Array[AST::Expression])
       end
 
       sig { returns(String) }
       def to_s
-        "#{@function} (#{@arguments.map(&:to_s).join(', ')})"
+        "#{@function}(#{@arguments.map(&:to_s).join(', ')})"
       end
     end
   end

@@ -8,7 +8,8 @@ module Monkey
 
       # @return [void]
       def expression_node
-        throw "#{self.class}#expression_node MethodNotImplemented"
+        raise NotImplementedError,
+              "#{self.class} has not implemented method '#{__method__}"
       end
     end
   end

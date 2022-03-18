@@ -16,7 +16,6 @@ module Monkey
         @token.literal
       end
 
-
       sig { returns(String) }
       def to_s
         token_literal
