@@ -80,7 +80,11 @@ module Monkey
       expression = parse_expression LOWEST
       next_token! if eol?
 
-      AST::LetStatement.new token, identifier, expression
+      AST::LetStatement.new(
+        token: token,
+        identifier: identifier,
+        expression: expression
+      )
     end
 
     sig { returns(AST::ReturnStatement) }

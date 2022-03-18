@@ -14,7 +14,7 @@ module Monkey
         params(token: Token, identifier: Identifier,
                expression: T.nilable(Expression)).void
       end
-      def initialize(token, identifier, expression)
+      def initialize(token:, identifier:, expression:)
         super(token: token)
         @identifier = identifier
         @expression = expression
