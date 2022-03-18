@@ -512,5 +512,44 @@ module Monkey
 
       test_infix_expression body_statement.expression, 'x', '+', 'y'
     end
+
+    it 'can parse function parameters' do
+      inputs = [
+        {
+          'input'    => 'fn() {};',
+          'expected' => []
+        },
+        {
+          'input'    => 'fn(x) {};',
+          'expected' => ['x']
+        },
+        {
+          'input'    => 'fn(x, y, z) {};',
+          'expected' => %w[x y z]
+        }
+      ]
+
+      inputs.each do |input|
+        lexer = Monkey::Lexer.new(input: input['input'])
+        parser = described_class.new lexer
+        program = parser.parse_program!
+
+        check_parser_errors parser
+        check_statements_size program, 1
+
+        statement = program.statements.first
+        function = statement.expression
+        expect(function.instance_of?(AST::FunctionLiteral)).to be true
+
+        if function.parameters.size != input['expected'].size
+          throw "length parameters wrong. \
+          expected=#{input['expected']}, got=#{function.parameters.size}"
+        end
+
+        input['expected'].each_with_index do |identifier, index|
+          test_literal_expression function.parameters[index], identifier
+        end
+      end
+    end
   end
 end
