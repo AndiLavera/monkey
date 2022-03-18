@@ -22,7 +22,8 @@ module Monkey
       Token::PLUS     => SUM_MINUS,
       Token::MINUS    => SUM_MINUS,
       Token::SLASH    => PRODUCT_DIVIDE,
-      Token::ASTERISK => PRODUCT_DIVIDE
+      Token::ASTERISK => PRODUCT_DIVIDE,
+      Token::L_PAREN  => CALL
     }.freeze, T::Hash[String, Integer])
 
     sig { returns(T::Array[String]) }
@@ -280,6 +281,41 @@ module Monkey
       identifiers
     end
 
+    sig { params(function: AST::Expression).returns(AST::CallExpression) }
+    def parse_call_expression!(function)
+      AST::CallExpression.new(
+        token: @curr_token,
+        function: function,
+        # TODO: || [] then remove T.nilable() from CallExpression constructor
+        arguments: parse_call_arguments!
+      )
+    end
+
+    sig { returns(T.nilable(T::Array[AST::Expression])) }
+    def parse_call_arguments!
+      args = T.let([], T::Array[AST::Expression])
+
+      if peek_token_is? Token::R_PAREN
+        next_token!
+        return args
+      end
+
+      next_token!
+      expression = parse_expression LOWEST
+      args << expression if expression
+
+      while peek_token_is? Token::COMMA
+        next_token!
+        next_token!
+        expression = parse_expression LOWEST
+        args << expression if expression
+      end
+
+      return nil unless expect_peek!(Token::R_PAREN)
+
+      args
+    end
+
     sig { void }
     def next_token!
       @curr_token = @peek_token
@@ -355,7 +391,8 @@ got #{@peek_token.type} instead"
       Token::EQ       => instance_method(:parse_infix_expression),
       Token::NOT_EQ   => instance_method(:parse_infix_expression),
       Token::LT       => instance_method(:parse_infix_expression),
-      Token::GT       => instance_method(:parse_infix_expression)
+      Token::GT       => instance_method(:parse_infix_expression),
+      Token::L_PAREN  => instance_method(:parse_call_expression!)
     }.freeze, T::Hash[String, UnboundMethod])
   end
   # rubocop:enable Metrics/ClassLength

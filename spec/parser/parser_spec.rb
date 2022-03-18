@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
@@ -29,8 +29,9 @@ module Monkey
     def check_parser_errors(parser)
       return if parser.errors.empty?
 
-      puts "parser has #{parser.errors.size} errors"
-      parser.errors.map { |err| puts "parser error: #{err}" }
+      puts "\n\n\nParser has #{parser.errors.size} errors:"
+      parser.errors.map { |err| puts "\tparser error: #{err}" }
+      puts "\n\n\n"
 
       throw StandardError
     end
@@ -45,10 +46,10 @@ module Monkey
       end
     end
 
-    def check_consequence_size(consequence, _size)
-      if consequence.size != 1
-        throw "consequence is not 1 statement. got=#{consequence.size}"
-      end
+    def check_consequence_size(consequence, size)
+      return if consequence.size == size
+
+      throw "consequence is not 1 statement. got=#{consequence.size}"
     end
 
     def test_literal_expression(expression, value)
@@ -64,7 +65,7 @@ module Monkey
     end
 
     def test_identifier(identifier, value)
-      expect(identifier.instance_of?(AST::Identifier)).to be true
+      expect(identifier.class).to be AST::Identifier
 
       if identifier.value != value
         throw "AST::Identifier#value not '#{value}' \
@@ -78,7 +79,7 @@ module Monkey
     end
 
     def test_integer_literal(int_literal, value)
-      expect(int_literal.instance_of?(AST::IntegerLiteral)).to be true
+      expect(int_literal.class).to be AST::IntegerLiteral
 
       if int_literal.value != value
         throw "AST::IntegerLiteral#value not '#{value}' \
@@ -92,7 +93,7 @@ module Monkey
     end
 
     def test_boolean_literal(bool_literal, value)
-      expect(bool_literal.instance_of?(AST::BooleanLiteral)).to be true
+      expect(bool_literal.class).to be AST::BooleanLiteral
 
       if bool_literal.value != value
         throw "AST::BooleanLiteral#value not '#{value}' \
@@ -106,7 +107,7 @@ module Monkey
     end
 
     def test_infix_expression(expression, left, operator, right)
-      expect(expression.instance_of?(AST::InfixExpression)).to be true
+      expect(expression.class).to be AST::InfixExpression
 
       test_literal_expression expression.left, left
 
@@ -247,7 +248,7 @@ module Monkey
       check_parser_errors parser
 
       program.statements.each do |statement|
-        expect(statement.instance_of?(AST::ReturnStatement)).to be true
+        expect(statement.class).to be AST::ReturnStatement
 
         if statement.token_literal != 'return'
           puts "AST::ReturnStatement#token_literal not 'return'. \
@@ -316,10 +317,10 @@ module Monkey
         check_statements_size program, 1
 
         statement = program.statements.first
-        expect(statement.instance_of?(AST::ExpressionStatement)).to be true
+        expect(statement.class).to be AST::ExpressionStatement
 
         expression = statement.expression
-        expect(expression.instance_of?(AST::PrefixExpression)).to be true
+        expect(expression.class).to be AST::PrefixExpression
 
         if expression.operator != pre_exp['operator']
           throw "PrefixExpression#operator is not '#{pre_exp['operator']}'. \
@@ -409,10 +410,10 @@ module Monkey
         check_statements_size program, 1
 
         statement = program.statements.first
-        expect(statement.instance_of?(AST::ExpressionStatement)).to be true
+        expect(statement.class).to be AST::ExpressionStatement
 
         expression = statement.expression
-        expect(expression.instance_of?(AST::InfixExpression)).to be true
+        expect(expression.class).to be AST::InfixExpression
 
         test_literal_expression expression.left, infix_exp['left']
 
@@ -434,17 +435,17 @@ module Monkey
       check_statements_size program, 1
 
       statement = program.statements.first
-      expect(statement.instance_of?(AST::ExpressionStatement)).to be true
+      expect(statement.class).to be AST::ExpressionStatement
 
       if_expression = statement.expression
-      expect(if_expression.instance_of?(AST::IfExpression)).to be true
+      expect(if_expression.class).to be AST::IfExpression
 
       test_infix_expression if_expression.condition, 'x', '<', 'y'
 
       check_consequence_size if_expression.consequence.statements, 1
 
       consequence = if_expression.consequence.statements.first
-      expect(consequence.instance_of?(AST::ExpressionStatement)).to be true
+      expect(consequence.class).to be AST::ExpressionStatement
 
       test_identifier consequence.expression, 'x'
 
@@ -460,24 +461,24 @@ module Monkey
       check_statements_size program, 1
 
       statement = program.statements.first
-      expect(statement.instance_of?(AST::ExpressionStatement)).to be true
+      expect(statement.class).to be AST::ExpressionStatement
 
       if_expression = statement.expression
-      expect(if_expression.instance_of?(AST::IfExpression)).to be true
+      expect(if_expression.class).to be AST::IfExpression
 
       test_infix_expression if_expression.condition, 'x', '<', 'y'
 
       check_consequence_size if_expression.consequence.statements, 1
 
       consequence = if_expression.consequence.statements.first
-      expect(consequence.instance_of?(AST::ExpressionStatement)).to be true
+      expect(consequence.class).to be AST::ExpressionStatement
 
       test_identifier consequence.expression, 'x'
 
       check_consequence_size if_expression.alternative.statements, 1
 
       alternative = if_expression.alternative.statements.first
-      expect(alternative.instance_of?(AST::ExpressionStatement)).to be true
+      expect(alternative.class).to be AST::ExpressionStatement
 
       test_identifier alternative.expression, 'y'
     end
@@ -492,7 +493,7 @@ module Monkey
 
       statement = program.statements.first
       function = statement.expression
-      expect(function.instance_of?(AST::FunctionLiteral)).to be true
+      expect(function.class).to be AST::FunctionLiteral
 
       if function.parameters.size != 2
         throw "function literal parameters wrong. \
@@ -508,7 +509,7 @@ module Monkey
       end
 
       body_statement = function.body.statements.first
-      expect(body_statement.instance_of?(AST::ExpressionStatement)).to be true
+      expect(body_statement.class).to be AST::ExpressionStatement
 
       test_infix_expression body_statement.expression, 'x', '+', 'y'
     end
@@ -539,7 +540,7 @@ module Monkey
 
         statement = program.statements.first
         function = statement.expression
-        expect(function.instance_of?(AST::FunctionLiteral)).to be true
+        expect(function.class).to be AST::FunctionLiteral
 
         if function.parameters.size != input['expected'].size
           throw "length parameters wrong. \
@@ -550,6 +551,31 @@ module Monkey
           test_literal_expression function.parameters[index], identifier
         end
       end
+    end
+
+    it 'can parse call functions' do
+      lexer = Monkey::Lexer.new(input: 'add(1, 2 * 3, 4 + 5);')
+      parser = described_class.new lexer
+      program = parser.parse_program!
+
+      check_parser_errors parser
+      check_statements_size program, 1
+
+      statement = program.statements.first
+      expect(statement.class).to be AST::ExpressionStatement
+
+      expression = statement.expression
+      expect(expression.class).to be AST::CallExpression
+
+      test_identifier expression.function, 'add'
+
+      if expression.arguments.size != 3
+        throw "wrong length of arguments. got=#{expression.arguments.size}"
+      end
+
+      test_literal_expression expression.arguments[0], 1
+      test_infix_expression expression.arguments[1], 2, '*', 3
+      test_infix_expression expression.arguments[2], 4, '+', 5
     end
   end
 end

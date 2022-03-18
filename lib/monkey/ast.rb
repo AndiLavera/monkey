@@ -16,6 +16,7 @@ require 'monkey/ast/let_statement'
 require 'monkey/ast/return_statement'
 require 'monkey/ast/block_statement'
 require 'monkey/ast/function_literal'
+require 'monkey/ast/call_expression'
 
 require 'monkey/ast/program'
 
