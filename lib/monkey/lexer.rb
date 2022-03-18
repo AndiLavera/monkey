@@ -34,7 +34,8 @@ module Monkey
       read_char!
     end
 
-    # Resets the lexer back to the original state without having to instaniate a new `Lexer` instance.
+    # Resets the lexer back to the original state without having to
+    # instaniate a new `Lexer` instance.
     # Only used for the REPL right now.
     sig do
       params(
@@ -128,7 +129,8 @@ module Monkey
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
 
-    # Returns `true` when the lexer has completed and `Lexer#next_token!` has returned the EOF token atleast once
+    # Returns `true` when the lexer has completed and `Lexer#next_token!`
+    # has returned the EOF token atleast once
     #
     # Usage:
     #
@@ -143,7 +145,8 @@ module Monkey
 
     private
 
-    # Runs the `next_position` counter until the end of an identifier and returns that slice.
+    # Runs the `next_position` counter until the end of an identifier
+    # and returns that slice.
     sig { returns(String) }
     def read_identifier
       start_pos = @position

@@ -184,5 +184,8 @@ Metrics/MethodLength:
 RSpec/ExampleLength:
   Enabled: false
 
+RSpec/MultipleExpectations:
+  Enabled: false
+
 AllCops:
   TargetRubyVersion: 2.7.0

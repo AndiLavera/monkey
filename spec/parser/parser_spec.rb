@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
@@ -14,13 +14,13 @@ module Monkey
       end
 
       if statement.identifier.value != expected
-        throw "statment.identifier.value not #{name}. \
-        got=#{statment.identifier.value}"
+        throw "statement.identifier.value not #{statement}. \
+        got=#{statement.identifier.value}"
       end
 
       if statement.identifier.token_literal != expected
         throw "statement.identifier not #{expected}. \
-        got=#{statment.identifier}"
+        got=#{statement.identifier}"
       end
 
       true
@@ -47,7 +47,7 @@ module Monkey
 
     def check_consequence_size(consequence, _size)
       if consequence.size != 1
-        thorw "consequence is not 1 statement. got=#{consequence.size}"
+        throw "consequence is not 1 statement. got=#{consequence.size}"
       end
     end
 

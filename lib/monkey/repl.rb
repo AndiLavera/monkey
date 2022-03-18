@@ -5,7 +5,7 @@ module Monkey
   class Repl
     extend T::Sig
 
-    PROMPT = 'imk> '
+    PROMPT = '>> '
     EXIT = 'exit'
 
     sig { void }
@@ -13,7 +13,7 @@ module Monkey
       new.run
     end
 
-        sig { void }
+    sig { void }
     def run
       lexer = Lexer.new
 
@@ -24,14 +24,20 @@ module Monkey
         break if input == EXIT
 
         lexer.reset!(input: input)
+        parser = Parser.new lexer
+        program = parser.parse_program!
 
-        until lexer.finished?
-          token = lexer.next_token!
-          puts token.inspect
+        unless parser.errors.empty?
+          puts " parser errors:\n"
+          parser.errors.each do |err|
+            puts "\t" + err
+          end
         end
+
+        puts program
       rescue Interrupt
         puts
       end
     end
-      end
+  end
 end

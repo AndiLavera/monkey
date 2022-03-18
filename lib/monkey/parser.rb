@@ -310,7 +310,7 @@ module Monkey
     sig { params(type: String).void }
     def peek_error(type)
       @errors << "expected next token to be #{type}, \
-      got #{@peek_token.type} instead"
+got #{@peek_token.type} instead"
     end
 
     sig { params(type: String).returns(T::Boolean) }
