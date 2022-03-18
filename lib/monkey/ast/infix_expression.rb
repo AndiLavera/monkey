@@ -13,10 +13,13 @@ module Monkey
       sig { returns(Expression) }
       attr_reader :left, :right
 
+      sig { returns(T.nilable(Expression)) }
+      attr_reader :right
+
       sig do
         params(
           token: Token, operator: String,
-          left: Expression, right: Expression
+          left: Expression, right: T.nilable(Expression)
         ).void
       end
       def initialize(token:, operator:, left:, right:)

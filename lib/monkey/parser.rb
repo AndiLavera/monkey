@@ -79,7 +79,7 @@ module Monkey
       expression = parse_expression LOWEST
       next_token! if eol?
 
-      AST::LetStatement.new token, identifier, T.must(expression)
+      AST::LetStatement.new token, identifier, expression
     end
 
     sig { returns(AST::ReturnStatement) }
@@ -89,7 +89,7 @@ module Monkey
 
       statement = AST::ReturnStatement.new(
         token: token,
-        expression: T.must(parse_expression(LOWEST))
+        expression: parse_expression(LOWEST)
       )
 
       next_token! if eol?
@@ -100,7 +100,7 @@ module Monkey
     def parse_expression_statement!
       statment = AST::ExpressionStatement.new(
         token: @curr_token,
-        expression: T.must(parse_expression(LOWEST))
+        expression: parse_expression(LOWEST)
       )
 
       next_token! if eol?
@@ -134,7 +134,7 @@ module Monkey
       AST::PrefixExpression.new(
         token: token,
         operator: token.literal,
-        right: T.must(parse_expression(PREFIX))
+        right: parse_expression(PREFIX)
       )
     end
 
@@ -150,7 +150,7 @@ module Monkey
         token: token,
         operator: token.literal,
         left: left,
-        right: T.must(right)
+        right: right
       )
     end
 
@@ -188,7 +188,7 @@ module Monkey
 
       AST::IfExpression.new(
         token: token,
-        condition: T.must(condition),
+        condition: condition,
         consequence: consequence,
         alternative: alternative
       )
@@ -240,6 +240,46 @@ module Monkey
       )
     end
 
+    sig { returns(T.nilable(AST::FunctionLiteral)) }
+    def parse_function_literal!
+      token = @curr_token
+      return nil unless expect_peek! Token::L_PAREN
+
+      parameters = parse_function_parameters!
+
+      return nil unless expect_peek! Token::L_BRACE
+
+      AST::FunctionLiteral.new(
+        token: token,
+        parameters: parameters,
+        body: parse_block_statement!
+      )
+    end
+
+    sig { returns(T.nilable(T::Array[AST::Identifier])) }
+    def parse_function_parameters!
+      identifiers = []
+
+      if peek_token_is? Token::R_PAREN
+        next_token!
+        return identifiers
+      end
+
+      next_token!
+
+      identifiers << AST::Identifier.new(@curr_token, @curr_token.literal)
+
+      while peek_token_is? Token::COMMA
+        next_token! # Skip over parameter already added to `identifiers`
+        next_token! # Skip over comma
+        identifiers << AST::Identifier.new(@curr_token, @curr_token.literal)
+      end
+
+      return nil unless expect_peek! Token::R_PAREN
+
+      identifiers
+    end
+
     sig { void }
     def next_token!
       @curr_token = @peek_token
@@ -269,7 +309,8 @@ module Monkey
 
     sig { params(type: String).void }
     def peek_error(type)
-      @errors << "expected next token to be #{type}, got #{@peek_token.type} instead"
+      @errors << "expected next token to be #{type}, \
+      got #{@peek_token.type} instead"
     end
 
     sig { params(type: String).returns(T::Boolean) }
@@ -301,7 +342,8 @@ module Monkey
       Token::TRUE       => instance_method(:parse_boolean),
       Token::FALSE      => instance_method(:parse_boolean),
       Token::L_PAREN    => instance_method(:parse_grouped_expression),
-      Token::IF         => instance_method(:parse_if_expression!)
+      Token::IF         => instance_method(:parse_if_expression!),
+      Token::FUNCTION   => instance_method(:parse_function_literal!)
     }.freeze, T::Hash[String, UnboundMethod])
 
     # TODO: This is stupid. What's a better way to say "is this token an infix operator"?

@@ -11,7 +11,9 @@ module Monkey
       attr_reader :identifier
 
       sig do
- params(token: Token, identifier: Identifier, expression: Expression).void end
+        params(token: Token, identifier: Identifier,
+               expression: T.nilable(Expression)).void
+      end
       def initialize(token, identifier, expression)
         super(token: token)
         @identifier = identifier

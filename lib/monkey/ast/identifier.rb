@@ -10,6 +10,7 @@ module Monkey
       sig { returns(String) }
       attr_reader :value
 
+      # TODO: Name
       sig { params(token: Token, value: String).void }
       def initialize(token, value)
         super(token: token)

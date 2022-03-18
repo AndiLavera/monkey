@@ -7,7 +7,7 @@ module Monkey
       extend T::Sig
       include Expression
 
-      sig { returns(Expression) }
+      sig { returns(T.nilable(Expression)) }
       attr_reader :condition
 
       sig { returns(BlockStatement) }
@@ -19,7 +19,7 @@ module Monkey
       sig do
         params(
           token: Token,
-          condition: Expression,
+          condition: T.nilable(Expression),
           consequence: BlockStatement,
           alternative: T.nilable(BlockStatement)
         ).void

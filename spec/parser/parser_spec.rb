@@ -30,10 +30,9 @@ module Monkey
       return if parser.errors.empty?
 
       puts "parser has #{parser.errors.size} errors"
+      parser.errors.map { |err| puts "parser error: #{err}" }
 
-      errors = parser.errors.map { |err| "parser error: #{err}" }
-
-      throw errors.join("\n")
+      throw StandardError
     end
 
     def check_statements_size(program, size)
@@ -481,6 +480,37 @@ module Monkey
       expect(alternative.instance_of?(AST::ExpressionStatement)).to be true
 
       test_identifier alternative.expression, 'y'
+    end
+
+    it 'can parse functions' do
+      lexer = Monkey::Lexer.new(input: 'fn(x, y) { x + y; }')
+      parser = described_class.new lexer
+      program = parser.parse_program!
+
+      check_parser_errors parser
+      check_statements_size program, 1
+
+      statement = program.statements.first
+      function = statement.expression
+      expect(function.instance_of?(AST::FunctionLiteral)).to be true
+
+      if function.parameters.size != 2
+        throw "function literal parameters wrong. \
+        expected=2, got=#{function.parameters.size}"
+      end
+
+      test_literal_expression function.parameters[0], 'x'
+      test_literal_expression function.parameters[1], 'y'
+
+      if function.body.statements.size != 1
+        throw "function.body.statements has not 1 statements. \
+        got=#{function.body.statements.size}"
+      end
+
+      body_statement = function.body.statements.first
+      expect(body_statement.instance_of?(AST::ExpressionStatement)).to be true
+
+      test_infix_expression body_statement.expression, 'x', '+', 'y'
     end
   end
 end

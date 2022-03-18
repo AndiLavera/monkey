@@ -8,7 +8,7 @@ module Monkey
 
       include Statement
 
-      sig { params(token: Token, expression: Expression).void }
+      sig { params(token: Token, expression: T.nilable(Expression)).void }
       def initialize(token:, expression:)
         super(token: token)
         @expression = expression

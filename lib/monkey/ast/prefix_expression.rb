@@ -10,10 +10,13 @@ module Monkey
       sig { returns(String) }
       attr_reader :operator
 
-      sig { returns(Expression) }
+      sig { returns(T.nilable(Expression)) }
       attr_reader :right
 
-      sig { params(token: Token, operator: String, right: Expression).void }
+      sig do
+        params(token: Token, operator: String,
+               right: T.nilable(Expression)).void
+      end
       def initialize(token:, operator:, right:)
         super(token: token)
         @operator = operator

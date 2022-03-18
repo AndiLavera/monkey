@@ -181,7 +181,7 @@ Metrics/MethodLength:
   Max: 20
 
 # TODO:
-Rspec/ExampleLength:
+RSpec/ExampleLength:
   Enabled: false
 
 AllCops:

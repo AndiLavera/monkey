@@ -7,10 +7,10 @@ module Monkey
       extend T::Sig
       include Statement
 
-      sig { returns(Expression) }
+      sig { returns(T.nilable(Expression)) }
       attr_reader :expression
 
-      sig { params(token: Token, expression: Expression).void }
+      sig { params(token: Token, expression: T.nilable(Expression)).void }
       def initialize(token:, expression:)
         super(token: token)
         @expression = expression
