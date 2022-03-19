@@ -3,9 +3,7 @@
 
 require_relative '../spec_helper'
 
-# rubocop:disable Metrics/ModuleLength
 module Monkey
-  # rubocop:disable Metrics/BlockLength
   describe Parser do
     def test_let_statement(statement, expected)
       if statement.token_literal != 'let'
@@ -53,11 +51,12 @@ module Monkey
     end
 
     def test_literal_expression(expression, value)
-      if value.instance_of?(String)
+      case value
+      when String
         test_identifier expression, value
-      elsif value.instance_of?(TrueClass) || value.instance_of?(FalseClass)
+      when TrueClass, FalseClass
         test_boolean_literal expression, value
-      elsif value.instance_of?(Integer)
+      when Integer
         test_integer_literal expression, value
       else
         throw "type of expression not handled. got=#{value.class}"

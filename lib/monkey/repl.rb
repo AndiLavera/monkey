@@ -13,6 +13,8 @@ module Monkey
       new.run
     end
 
+    # rubocop:disable Metrics/AbcSize
+
     sig { void }
     def run
       lexer = Lexer.new
@@ -29,12 +31,16 @@ module Monkey
 
         unless parser.errors.empty?
           puts " parser errors:\n"
+
           parser.errors.each do |err|
-            puts "\t" + err
+            puts "\t#{err}"
           end
         end
 
-        puts program
+        evaluator = Evaluator.new
+        evaluated = evaluator.evaluate_program(program)
+
+        puts evaluated.inspect unless evaluated.nil?
       rescue Interrupt
         puts
       end
