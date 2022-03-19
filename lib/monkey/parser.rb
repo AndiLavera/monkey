@@ -386,7 +386,6 @@ got #{@peek_token.type} instead"
       Token::FUNCTION   => instance_method(:parse_function_literal!)
     }.freeze, T::Hash[String, UnboundMethod])
 
-    # TODO: This is stupid. What's a better way to say "is this token an infix operator"?
     InfixDispatcher = T.let({
       Token::PLUS     => instance_method(:parse_infix_expression),
       Token::MINUS    => instance_method(:parse_infix_expression),

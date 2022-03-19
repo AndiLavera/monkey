@@ -197,7 +197,7 @@ module Monkey
     sig { returns(T::Boolean) }
     def digit?
       # TODO: /[0-9]/ ?
-      !eof? && !!curr_char.match(/^(\d*[.\d]+)/)
+      !!curr_char.match(/^(\d*[.\d]+)/)
     end
 
     sig { returns(T::Boolean) }

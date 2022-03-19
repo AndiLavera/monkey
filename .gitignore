@@ -1,5 +1,7 @@
 coverage/*
-docs/*
+doc/*
 .bundle
 
 Gemfile.lock
+/.yardoc
+.DS_Store
