@@ -13,7 +13,7 @@ module Monkey
 
     sig { params(program: AST::Program).returns(ObjectType) }
     def evaluate_program(program)
-      eval_statements program.statements
+      eval_program program
     end
 
     sig { params(node: AST::Node).returns(ObjectType) }
@@ -33,9 +33,11 @@ module Monkey
         left = run(node.left)
         eval_infix_expression(node.operator, left, right)
       when AST::BlockStatement
-        eval_statements(node.statements)
+        eval_block_statement(node)
       when AST::IfExpression
         eval_if_expression(node)
+      when AST::ReturnStatement
+        ReturnValueType.new(run(T.must(node.expression)))
       else
         T.must(SINGLETONS['null'])
       end
@@ -43,15 +45,16 @@ module Monkey
 
     private
 
-    sig do
-      params(nodes: T::Array[AST::Node])
-        .returns(ObjectType)
-    end
-    def eval_statements(nodes)
+    sig { params(program: AST::Program).returns(ObjectType) }
+    def eval_program(program)
       result = T.let(nil, T.nilable(ObjectType))
 
-      nodes.each do |node|
+      program.statements.each do |node|
         result = run(node)
+
+        # Must return instead of reassign.
+        # Otherwise we reach 'unreachable' expressions.
+        return result.value if result.is_a?(ReturnValueType)
       end
 
       throw 'EmptyNodesInEvaluator' unless result
@@ -119,6 +122,23 @@ module Monkey
         # TODO: Undefined operator on type
         fetch('null')
       end
+    end
+
+    sig { params(block: AST::BlockStatement).returns(ObjectType) }
+    def eval_block_statement(block)
+      result = T.let(nil, T.nilable(ObjectType))
+
+      block.statements.each do |node|
+        result = run(node)
+
+        # Must return instead of reassign.
+        # Otherwise we reach 'unreachable' expressions.
+        return result if result.is_a?(ReturnValueType)
+      end
+
+      # TODO: What do?
+      throw 'EmptyNodesInEvaluator' unless result
+      result
     end
 
     sig do

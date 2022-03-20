@@ -106,5 +106,27 @@ module Monkey
         end
       end
     end
+
+    it 'can evaluate return statements' do
+      inputs = [
+        Helpers::Input.new('return 10;', 10),
+        Helpers::Input.new('return 10; 9;', 10),
+        Helpers::Input.new('return 2 * 5; 9;', 10),
+        Helpers::Input.new('9; return 2 * 5; 9;', 10),
+        Helpers::Input.new(
+          'if (10 > 1) {' +
+            'if (10 > 1) {' +
+            'return 10;' +
+            '}' +
+            'return 1;' +
+            '}',
+          10
+        )
+      ]
+
+      inputs.each do |input|
+        test_int_type(evaluate(input.input), input.expected)
+      end
+    end
   end
 end
