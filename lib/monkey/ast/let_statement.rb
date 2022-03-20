@@ -10,6 +10,9 @@ module Monkey
       sig { returns(Identifier) }
       attr_reader :identifier
 
+      sig { returns(T.nilable(Expression)) }
+      attr_reader :expression
+
       sig do
         params(token: Token, identifier: Identifier,
                expression: T.nilable(Expression)).void

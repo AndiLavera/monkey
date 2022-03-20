@@ -5,7 +5,7 @@ require_relative './helpers'
 
 module Monkey
   module Helpers
-    module Interpreter
+    module InterpreterHelper
       extend T::Sig
 
       # TODO: Mock
@@ -14,7 +14,8 @@ module Monkey
       sig { params(input: String).returns(ObjectType) }
       def evaluate(input)
         _, _, program = parse_input(input)
-        Evaluator.new.evaluate_program(program)
+        env = Monkey::Interpreter::Environment.new
+        Evaluator.new.evaluate_program(program, env)
       end
 
       sig { params(result: ObjectType, expected: Integer).void }

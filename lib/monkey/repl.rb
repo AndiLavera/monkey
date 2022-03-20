@@ -1,4 +1,4 @@
-# typed: strict
+# typed: true
 # frozen_string_literal: true
 
 require 'io/console'
@@ -23,6 +23,8 @@ module Monkey
     def run
       puts __dir__
       lexer = Lexer.new
+      evaluator = Evaluator.new
+      env = Interpreter::Environment.new
 
       input = ''
       loop do
@@ -40,7 +42,6 @@ module Monkey
         # end
 
         input = gets.chomp
-        puts input
 
         break if input == EXIT
 
@@ -49,15 +50,14 @@ module Monkey
         program = parser.parse_program!
 
         unless parser.errors.empty?
-          puts " parser errors:\n"
+          puts "parser errors:\n"
 
           parser.errors.each do |err|
             puts "\t#{err}"
           end
         end
 
-        evaluator = Evaluator.new
-        evaluated = evaluator.evaluate_program(program)
+        evaluated = evaluator.evaluate_program(program, env)
 
         puts evaluated if evaluated
 

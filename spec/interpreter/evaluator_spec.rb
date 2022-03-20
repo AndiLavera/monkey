@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
@@ -7,10 +7,11 @@ require_relative '../helpers/parser_helper'
 require_relative '../helpers/interpreter_helper'
 
 module Monkey
+  # module Interpreter
   describe Evaluator do
     extend T::Sig
     include Helpers::Parser
-    include Helpers::Interpreter
+    include Helpers::InterpreterHelper
 
     it 'can evaluate integer expresions' do
       inputs = [
@@ -156,6 +157,10 @@ module Monkey
           'ERROR: unknown operator: BOOLEAN + BOOLEAN'
         ),
         Helpers::Input.new(
+          'foobar',
+          'ERROR: identifier not found: foobar'
+        ),
+        Helpers::Input.new(
           'if (10 > 1) {
 if (10 > 1) {
 return true + false;
@@ -169,5 +174,19 @@ return 1; }',
         test_error_type(evaluate(input.input), input.expected)
       end
     end
+
+    it 'can evaluate let statements' do
+      inputs = [
+        Helpers::Input.new('let a = 5; a;', 5),
+        Helpers::Input.new('let a = 5 * 5; a;', 25),
+        Helpers::Input.new('let a = 5; let b = a; b;', 5),
+        Helpers::Input.new('let a = 5; let b = a; let c = a + b + 5; c;', 15)
+      ]
+
+      inputs.each do |input|
+        test_int_type(evaluate(input.input), input.expected)
+      end
+    end
   end
+  # end
 end

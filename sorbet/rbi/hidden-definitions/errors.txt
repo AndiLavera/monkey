@@ -2227,16 +2227,6 @@
 # uninitialized constant Matrix
 # uninitialized constant MessagePack
 # uninitialized constant MessagePack
-# uninitialized constant Minitest::Spec::E
-# uninitialized constant Minitest::Spec::PASSTHROUGH_EXCEPTIONS
-# uninitialized constant Minitest::Spec::SIGNALS
-# Did you mean?  Signal
-# uninitialized constant Minitest::Spec::TEARDOWN_METHODS
-# uninitialized constant Minitest::Spec::UNDEFINED
-# uninitialized constant Minitest::Test::E
-# uninitialized constant Minitest::Test::SIGNALS
-# Did you mean?  Signal
-# uninitialized constant Minitest::Test::UNDEFINED
 # wrong constant name enter
 # wrong constant name exit
 # wrong constant name mon_check_owner
@@ -2257,6 +2247,8 @@
 # uninitialized constant MonitorMixin::ConditionVariable::Timeout
 # wrong constant name []
 # wrong constant name members
+# uninitialized constant Mutex_m
+# uninitialized constant Mutex_m
 # uninitialized constant NKF
 # uninitialized constant NKF
 # uninitialized constant Net::DNS
@@ -2320,6 +2312,10 @@
 # wrong constant name <Class:Object>
 # uninitialized constant Observable
 # uninitialized constant Observable
+# uninitialized constant Open3
+# Did you mean?  OpenSSL
+# uninitialized constant Open3
+# Did you mean?  OpenSSL
 # uninitialized constant OpenSSL::Digest::DSS
 # uninitialized constant OpenSSL::Digest::DSS
 # uninitialized constant OpenSSL::Digest::DSS1
@@ -2331,9 +2327,9 @@
 # uninitialized constant OpenSSL::PKCS5::PKCS5Error
 # uninitialized constant OpenSSL::PKCS5::PKCS5Error
 # uninitialized constant OpenURI
-# Did you mean?  Open3
+# Did you mean?  OpenStruct
 # uninitialized constant OpenURI
-# Did you mean?  Open3
+# Did you mean?  OpenStruct
 # wrong constant name additional_message
 # wrong constant name get_candidates
 # wrong constant name additional
@@ -2910,7 +2906,7 @@
 # wrong constant name <static-init>
 # wrong constant name worse_than?
 # wrong constant name +
-# uninitialized constant #<Class:0x0000000118055078>::Elem
+# uninitialized constant #<Class:0x00000001453407d8>::Elem
 # wrong constant name candidate?
 # wrong constant name ideal?
 # wrong constant name indeterminate_actual_indexes

@@ -4099,43 +4099,6 @@ class KeyError
   include ::DidYouMean::Correctable
 end
 
-MiniTest = Minitest
-
-module Minitest
-  ENCS = ::T.let(nil, ::T.untyped)
-  VERSION = ::T.let(nil, ::T.untyped)
-end
-
-module Minitest::Assertions
-  E = ::T.let(nil, ::T.untyped)
-  UNDEFINED = ::T.let(nil, ::T.untyped)
-end
-
-class Minitest::BacktraceFilter
-  MT_RE = ::T.let(nil, ::T.untyped)
-end
-
-class Minitest::Runnable
-  SIGNALS = ::T.let(nil, ::T.untyped)
-end
-
-class Minitest::Spec
-  TYPES = ::T.let(nil, ::T.untyped)
-end
-
-module Minitest::Spec::DSL
-  TYPES = ::T.let(nil, ::T.untyped)
-end
-
-class Minitest::Test
-  PASSTHROUGH_EXCEPTIONS = ::T.let(nil, ::T.untyped)
-  TEARDOWN_METHODS = ::T.let(nil, ::T.untyped)
-end
-
-class Minitest::Unit
-  VERSION = ::T.let(nil, ::T.untyped)
-end
-
 class Monitor
   def enter(); end
 
@@ -4249,6 +4212,11 @@ class Monkey::BooleanType
   extend ::T::Private::Methods::SingletonMethodHooks
 end
 
+class Monkey::ErrorType
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
+end
+
 class Monkey::Evaluator
   extend ::T::Private::Methods::MethodHooks
   extend ::T::Private::Methods::SingletonMethodHooks
@@ -4302,13 +4270,14 @@ class Monkey::Repl
   extend ::T::Private::Methods::SingletonMethodHooks
 end
 
-class Monkey::Token
+class Monkey::ReturnValueType
   extend ::T::Private::Methods::MethodHooks
   extend ::T::Private::Methods::SingletonMethodHooks
 end
 
-module Mutex_m
-  VERSION = ::T.let(nil, ::T.untyped)
+class Monkey::Token
+  extend ::T::Private::Methods::MethodHooks
+  extend ::T::Private::Methods::SingletonMethodHooks
 end
 
 class NameError
@@ -4368,12 +4337,6 @@ class OptionParser::ParseError
   def additional(); end
 
   def additional=(additional); end
-end
-
-module Prettier
-  BINARY = ::T.let(nil, ::T.untyped)
-  PLUGIN = ::T.let(nil, ::T.untyped)
-  VERSION = ::T.let(nil, ::T.untyped)
 end
 
 class Proc
