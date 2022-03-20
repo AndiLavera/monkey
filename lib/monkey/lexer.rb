@@ -5,7 +5,6 @@ require 'monkey/token'
 require 'byebug'
 
 module Monkey
-  # rubocop:disable Metrics/ClassLength
   class Lexer
     extend T::Sig
 
@@ -60,9 +59,6 @@ module Monkey
       read_char!
     end
 
-    # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
 
     sig { returns(Token) }
@@ -109,6 +105,8 @@ module Monkey
                 else
                   Token.new(Token::ASSIGN, curr_char)
                 end
+              when Token::D_QUOTE
+                Token.new(Token::STRING, read_string)
               else
                 if letter?
                   word = read_identifier
@@ -124,9 +122,6 @@ module Monkey
       token
     end
 
-    # rubocop:enable Metrics/MethodLength
-    # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/PerceivedComplexity
 
     # Returns `true` when the lexer has completed and `Lexer#next_token!`
@@ -155,7 +150,8 @@ module Monkey
       @input[start_pos...@position].to_s
     end
 
-    # Runs the `next_position` counter until the end of an digit and returns that slice.
+    # Runs the `next_position` counter until the end of an digit
+    # and returns that slice.
     sig { returns(String) }
     def read_number
       start_pos = @position
@@ -175,6 +171,18 @@ module Monkey
     sig { returns(String) }
     def peek_char
       @input[@next_position].to_s # Convert `nil` to empty string
+    end
+
+    sig { returns(String) }
+    def read_string
+      start_pos = @position + 1
+
+      loop do
+        read_char!
+        break if curr_char == Token::D_QUOTE || eof?
+      end
+
+      @input[start_pos...@position].to_s
     end
 
     sig { returns(Integer) }
@@ -237,5 +245,4 @@ module Monkey
       @input[@next_position].nil?
     end
   end
-  # rubocop:enable Metrics/ClassLength
 end

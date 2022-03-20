@@ -31,6 +31,8 @@ module Monkey
     R_PAREN    = ')'
     L_BRACE    = '{'
     R_BRACE    = '}'
+    S_QUOTE    = "'"
+    D_QUOTE    = '"'
 
     # Keywords
     FUNCTION = 'FUNCTION'
@@ -40,6 +42,7 @@ module Monkey
     IF       = 'IF'
     ELSE     = 'ELSE'
     RETURN   = 'RETURN'
+    STRING   = 'STRING'
 
     KEYWORDS = T.let({
       'fn'     => FUNCTION,
