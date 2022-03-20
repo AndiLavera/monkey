@@ -217,6 +217,16 @@ return 1; }',
         test_int_type(evaluate(input.input), input.expected)
       end
     end
+
+    it 'can handle closures' do
+      input = 'let newAdder = fn(x) {
+        fn(y) { x + y };
+   };
+      let addTwo = newAdder(2);
+      addTwo(2);'
+
+      test_int_type(evaluate(input), 4)
+    end
   end
   # end
 end
