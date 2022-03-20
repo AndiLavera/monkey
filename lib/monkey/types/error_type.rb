@@ -13,7 +13,7 @@ module Monkey
 
     sig { override.returns(String) }
     def type
-      ERROR_OBJ
+      ERROR_TYPE
     end
 
     sig { override.returns(String) }

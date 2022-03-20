@@ -13,7 +13,7 @@ module Monkey
     BOOLEAN_TYPE = 'BOOLEAN'
     NIL_TYPE = 'NIL'
     RETURN_VALUE_TYPE = 'RETURN_VALUE'
-    ERROR_OBJ = 'ERROR'
+    ERROR_TYPE = 'ERROR'
 
     sig { abstract.returns(String) }
     def type; end

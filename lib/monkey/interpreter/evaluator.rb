@@ -27,17 +27,26 @@ module Monkey
         native_bool_to_boolean_type(node.value)
       when AST::PrefixExpression
         right = run(T.must(node.right))
+        return right if error?(right)
+
         eval_prefix_expression(node.operator, right)
       when AST::InfixExpression
-        right = run(T.must(node.right))
         left = run(node.left)
+        return left if error?(left)
+
+        right = run(T.must(node.right))
+        return right if error?(right)
+
         eval_infix_expression(node.operator, left, right)
       when AST::BlockStatement
         eval_block_statement(node)
       when AST::IfExpression
         eval_if_expression(node)
       when AST::ReturnStatement
-        ReturnValueType.new(run(T.must(node.expression)))
+        evaluated = run(T.must(node.expression))
+        return evaluated if error?(evaluated)
+
+        ReturnValueType.new(evaluated)
       else
         T.must(SINGLETONS['null'])
       end
@@ -183,6 +192,7 @@ module Monkey
     sig { params(node: AST::IfExpression).returns(ObjectType) }
     def eval_if_expression(node)
       condition = run(T.must(node.condition))
+      return condition if error?(condition)
 
       if truthy?(condition)
         run(node.consequence)
@@ -205,6 +215,10 @@ module Monkey
     sig { params(type: String).returns(ObjectType) }
     def fetch(type)
       T.must(SINGLETONS[type])
+    end
+
+    def error?(obj)
+      obj.type == ObjectType::ERROR_TYPE
     end
   end
 end
