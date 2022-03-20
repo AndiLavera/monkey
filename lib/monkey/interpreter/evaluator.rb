@@ -26,12 +26,16 @@ module Monkey
       when AST::BooleanLiteral
         native_bool_to_boolean_type(node.value)
       when AST::PrefixExpression
-        right = run(T.cast(node.right, AST::Node))
+        right = run(T.must(node.right))
         eval_prefix_expression(node.operator, right)
       when AST::InfixExpression
-        right = run(T.cast(node.right, AST::Node))
+        right = run(T.must(node.right))
         left = run(node.left)
         eval_infix_expression(node.operator, left, right)
+      when AST::BlockStatement
+        eval_statements(node.statements)
+      when AST::IfExpression
+        eval_if_expression(node)
       else
         T.must(SINGLETONS['null'])
       end
@@ -66,27 +70,25 @@ module Monkey
         eval_minus_prefix_operator_expression(right)
       else
         # TODO: Undefined method
-        T.must(SINGLETONS['null'])
+        fetch('null')
       end
     end
 
     sig { params(right: ObjectType).returns(ObjectType) }
     def eval_bang_operator_expression(right)
       case right
-      when T.must(SINGLETONS['true'])
-        return T.must(SINGLETONS['false'])
-      when T.must(SINGLETONS['false']), T.must(SINGLETONS['null'])
-        return T.must(SINGLETONS['true'])
+      when fetch('true')
+        return fetch('false')
+      when fetch('false'), fetch('null')
+        return fetch('true')
       end
 
-      T.must(SINGLETONS['false'])
+      fetch('false')
     end
 
     sig { params(right: ObjectType).returns(ObjectType) }
     def eval_minus_prefix_operator_expression(right)
-      unless right.type == ObjectType::INTEGER_TYPE
-        return T.must(SINGLETONS['null'])
-      end
+      return fetch('null') unless right.type == ObjectType::INTEGER_TYPE
 
       IntegerType.new(
         -T.cast(right, IntegerType).value
@@ -115,7 +117,7 @@ module Monkey
         )
       else
         # TODO: Undefined operator on type
-        T.must(SINGLETONS['null'])
+        fetch('null')
       end
     end
 
@@ -146,13 +148,40 @@ module Monkey
         native_bool_to_boolean_type(left.value != right.value)
       else
         # TODO: Bad operator
-        T.must(SINGLETONS['null'])
+        fetch('null')
       end
     end
 
     sig { params(input: T::Boolean).returns(BooleanType) }
     def native_bool_to_boolean_type(input)
-      T.cast(T.must(SINGLETONS[input.to_s]), BooleanType)
+      T.cast(fetch(input.to_s), BooleanType)
+    end
+
+    sig { params(node: AST::IfExpression).returns(ObjectType) }
+    def eval_if_expression(node)
+      condition = run(T.must(node.condition))
+
+      if truthy?(condition)
+        run(node.consequence)
+      elsif node.alternative
+        run(T.must(node.alternative))
+      else
+        fetch('null')
+      end
+    end
+
+    sig { params(obj: ObjectType).returns(T::Boolean) }
+    def truthy?(obj)
+      case obj
+      when fetch('null'), fetch('false')
+        false
+      else true
+      end
+    end
+
+    sig { params(type: String).returns(ObjectType) }
+    def fetch(type)
+      T.must(SINGLETONS[type])
     end
   end
 end

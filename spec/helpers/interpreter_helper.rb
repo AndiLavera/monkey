@@ -29,7 +29,7 @@ module Monkey
         expect(T.cast(result, BooleanType).value).to eq(expected)
       end
 
-      sig { params(result: ObjectType, expected: String).void }
+      sig { params(result: ObjectType, expected: NilClass).void }
       def test_nil_type(result, expected)
         expect(result.class).to be(NilType)
         expect(T.cast(result, NilType).value).to eq(expected)

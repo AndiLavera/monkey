@@ -102,7 +102,7 @@ module Monkey
         elsif evaluated.instance_of?(BooleanType)
           test_bool_type(evaluated, input.expected)
         else
-          puts evaluated
+          test_nil_type(evaluated, input.expected)
         end
       end
     end

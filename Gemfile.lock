@@ -20,9 +20,6 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     mini_portile2 (2.8.0)
-    minitest (5.13.0)
-    minitest-skip (0.0.3)
-      minitest (~> 5.0)
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -31,7 +28,6 @@ GEM
     parallel (1.21.0)
     parser (3.1.1.0)
       ast (~> 2.4.1)
-    prettier (2.0.0)
     racc (1.6.0)
     rainbow (3.1.1)
     rake (13.0.6)
@@ -124,10 +120,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug (~> 11.1)
-  minitest
-  minitest-skip
   monkey!
-  prettier
   rake
   rspec
   rspec-sorbet
