@@ -3,8 +3,10 @@
 
 module Monkey
   module AST
+    # TODO: I don't like this being a node and being named program
     class Program
       extend T::Sig
+      include Node
 
       sig { returns(T::Array[Node]) }
       attr_reader :statements

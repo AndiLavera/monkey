@@ -16,11 +16,11 @@ module Monkey
       eval_program program
     end
 
-    sig { params(node: T.untyped).returns(ObjectType) }
+    sig { params(node: AST::Node).returns(ObjectType) }
     def run(node)
       case node
       when AST::ExpressionStatement
-        run(node.expression)
+        run(T.must(node.expression))
       when AST::IntegerLiteral
         IntegerType.new node.value
       when AST::BooleanLiteral
