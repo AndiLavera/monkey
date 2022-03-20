@@ -187,6 +187,36 @@ return 1; }',
         test_int_type(evaluate(input.input), input.expected)
       end
     end
+
+    # TODO: Rename
+    it 'can evaluate function objects' do
+      input = 'fn(x) { x + 2; };'
+      body = '(x + 2)'
+
+      evaluated = evaluate(input)
+      expect(evaluated.class).to be(FunctionType)
+      expect(evaluated.parameters.size).to eq(1)
+      expect(evaluated.parameters.first.to_s).to eq('x')
+      expect(evaluated.body.to_s).to eq(body)
+    end
+
+    it 'can evaluate functions' do
+      inputs = [
+        Helpers::Input.new('let identity = fn(x) { x; }; identity(5);', 5),
+        Helpers::Input.new('let identity = fn(x) { return x; }; identity(5);',
+                           5),
+        Helpers::Input.new('let double = fn(x) { x * 2; }; double(5);', 10),
+        Helpers::Input.new('let add = fn(x, y) { x + y; }; add(5, 5);', 10),
+        Helpers::Input.new(
+          'let add = fn(x, y) { x + y; }; add(5 + 5, add(5, 5));', 20
+        ),
+        Helpers::Input.new('fn(x) { x; }(5)', 5)
+      ]
+
+      inputs.each do |input|
+        test_int_type(evaluate(input.input), input.expected)
+      end
+    end
   end
   # end
 end

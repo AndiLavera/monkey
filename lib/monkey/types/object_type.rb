@@ -9,11 +9,12 @@ module Monkey
 
     include Kernel
 
-    INTEGER_TYPE = 'INTEGER'
-    BOOLEAN_TYPE = 'BOOLEAN'
-    NIL_TYPE = 'NIL'
+    INTEGER_TYPE      = 'INTEGER'
+    BOOLEAN_TYPE      = 'BOOLEAN'
+    NIL_TYPE          = 'NIL'
     RETURN_VALUE_TYPE = 'RETURN_VALUE'
-    ERROR_TYPE = 'ERROR'
+    ERROR_TYPE        = 'ERROR'
+    FUNCTION_TYPE      = 'FUNCTION'
 
     sig { abstract.returns(String) }
     def type; end

@@ -62,6 +62,18 @@ module Monkey
         env.set(node.identifier.value, evaluated)
       when AST::Identifier
         eval_identifier(node, env)
+      when AST::FunctionLiteral
+        FunctionType.new(node.body, env, node.parameters)
+      when AST::CallExpression
+        function = run(node.function, env)
+        return function if error?(function)
+
+        args = eval_expressions(node.arguments, env)
+        if args.size == 1 && error?(T.must(args.first))
+          return T.must(args.first)
+        end
+
+        apply_function(function, args)
       else
         SINGLETONS.fetch('null')
       end
@@ -234,6 +246,50 @@ module Monkey
     end
     def eval_identifier(node, env)
       env.get(node.value)
+    end
+
+    sig do
+      params(expressions: T::Array[AST::Expression],
+             env: Interpreter::Environment).returns(T::Array[ObjectType])
+    end
+    def eval_expressions(expressions, env)
+      expressions.map do |expression|
+        evaluated = run(expression, env)
+        return [evaluated] if error?(evaluated)
+
+        evaluated
+      end
+    end
+
+    sig do
+      params(fn: ObjectType,
+             args: T::Array[ObjectType]).returns(ObjectType)
+    end
+    def apply_function(fn, args)
+      function = T.cast(fn, FunctionType)
+      extended_env = extend_function_env(function, args)
+      evaluated = run(function.body, extended_env)
+      unwrap_return_value(evaluated)
+    end
+
+    sig do
+      params(fn: FunctionType,
+             args: T::Array[ObjectType]).returns(Interpreter::Environment)
+    end
+    def extend_function_env(fn, args)
+      env = Interpreter::Environment.new(outer: fn.env)
+
+      fn.parameters.each_with_index do |param, idx|
+        # TODO: Report error if nil?
+        env.set(param.value, T.must(args[idx]))
+      end
+
+      env
+    end
+
+    sig { params(obj: ObjectType).returns(ObjectType) }
+    def unwrap_return_value(obj)
+      obj.is_a?(ReturnValueType) ? obj.value : obj
     end
 
     sig { params(obj: ObjectType).returns(T::Boolean) }

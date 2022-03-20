@@ -6,8 +6,12 @@ module Monkey
     class Environment
       extend T::Sig
 
-      sig { params(store: T::Hash[String, ObjectType]).void }
-      def initialize(store = {})
+      sig do
+        params(outer: T.nilable(Environment),
+               store: T::Hash[String, ObjectType]).void
+      end
+      def initialize(outer: nil, store: {})
+        @outer = outer
         @store = store
       end
 
@@ -15,6 +19,8 @@ module Monkey
       def get(key)
         @store.fetch(key)
       rescue KeyError
+        return @outer.get(key) if @outer
+
         ErrorType.new("identifier not found: #{key}")
       end
 
