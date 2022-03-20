@@ -34,6 +34,12 @@ module Monkey
         expect(result.class).to be(NilType)
         expect(T.cast(result, NilType).value).to eq(expected)
       end
+
+      sig { params(result: ObjectType, expected: String).void }
+      def test_error_type(result, expected)
+        expect(T.cast(result, ErrorType).to_s).to eq(expected)
+        expect(result.class).to be(ErrorType)
+      end
     end
   end
 end

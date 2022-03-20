@@ -16,11 +16,11 @@ module Monkey
       eval_program program
     end
 
-    sig { params(node: AST::Node).returns(ObjectType) }
+    sig { params(node: T.untyped).returns(ObjectType) }
     def run(node)
       case node
       when AST::ExpressionStatement
-        run(T.must(node.expression))
+        run(node.expression)
       when AST::IntegerLiteral
         IntegerType.new node.value
       when AST::BooleanLiteral
@@ -52,8 +52,8 @@ module Monkey
       program.statements.each do |node|
         result = run(node)
 
-        # Must return instead of reassign.
-        # Otherwise we reach 'unreachable' expressions.
+        # Must return to 'stop' code execution.
+        return result if result.is_a?(ErrorType)
         return result.value if result.is_a?(ReturnValueType)
       end
 
@@ -72,8 +72,7 @@ module Monkey
       when Token::MINUS
         eval_minus_prefix_operator_expression(right)
       else
-        # TODO: Undefined method
-        fetch('null')
+        ErrorType.new("unknown operator: #{operator}#{right.type}")
       end
     end
 
@@ -91,11 +90,11 @@ module Monkey
 
     sig { params(right: ObjectType).returns(ObjectType) }
     def eval_minus_prefix_operator_expression(right)
-      return fetch('null') unless right.type == ObjectType::INTEGER_TYPE
+      if right.type != ObjectType::INTEGER_TYPE
+        return ErrorType.new("unknown operator: -#{right.type}")
+      end
 
-      IntegerType.new(
-        -T.cast(right, IntegerType).value
-      )
+      IntegerType.new(-T.cast(right, IntegerType).value)
     end
 
     sig do
@@ -105,7 +104,7 @@ module Monkey
     def eval_infix_expression(operator, left, right)
       # TODO: Go's object system doesn’t allow pointer
       # comparison for integer objects so this special case
-      # is needed. Can hoist switch case in
+      # is needed (in Go). Can hoist switch case in
       # eval_infix_integer_expression to this method
       if left.type == ObjectType::INTEGER_TYPE &&
          right.type == ObjectType::INTEGER_TYPE
@@ -118,9 +117,10 @@ module Monkey
         native_bool_to_boolean_type(
           T.cast(left, BooleanType).value != T.cast(right, BooleanType).value
         )
+      elsif left.type != right.type
+        ErrorType.new("type mismatch: #{left.type} #{operator} #{right.type}")
       else
-        # TODO: Undefined operator on type
-        fetch('null')
+        ErrorType.new("unknown operator: #{left.type} #{operator} #{right.type}")
       end
     end
 
@@ -133,7 +133,9 @@ module Monkey
 
         # Must return instead of reassign.
         # Otherwise we reach 'unreachable' expressions.
-        return result if result.is_a?(ReturnValueType)
+        if result.is_a?(ReturnValueType) || result.is_a?(ErrorType)
+          return result
+        end
       end
 
       # TODO: What do?
@@ -167,8 +169,9 @@ module Monkey
       when Token::NOT_EQ
         native_bool_to_boolean_type(left.value != right.value)
       else
-        # TODO: Bad operator
-        fetch('null')
+        ErrorType.new(
+          "unknown operator: #{left.type} #{operator} #{right.type}"
+        )
       end
     end
 

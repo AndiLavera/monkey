@@ -113,19 +113,60 @@ module Monkey
         Helpers::Input.new('return 10; 9;', 10),
         Helpers::Input.new('return 2 * 5; 9;', 10),
         Helpers::Input.new('9; return 2 * 5; 9;', 10),
-        Helpers::Input.new(
-          'if (10 > 1) {' +
-            'if (10 > 1) {' +
-            'return 10;' +
-            '}' +
-            'return 1;' +
-            '}',
+        Helpers::Input.new( # Test the earlier return
+          'if (10 > 1) {
+            if (10 > 1) {
+              return 10;
+            }
+            return 1;
+          }',
           10
         )
       ]
 
       inputs.each do |input|
         test_int_type(evaluate(input.input), input.expected)
+      end
+    end
+
+    it 'can handle errors' do
+      inputs = [
+        Helpers::Input.new(
+          '5 + true;',
+          'ERROR: type mismatch: INTEGER + BOOLEAN'
+        ),
+        Helpers::Input.new(
+          '5 + true; 5;',
+          'ERROR: type mismatch: INTEGER + BOOLEAN'
+        ),
+        Helpers::Input.new(
+          '-true',
+          'ERROR: unknown operator: -BOOLEAN'
+        ),
+        Helpers::Input.new(
+          'true + false;',
+          'ERROR: unknown operator: BOOLEAN + BOOLEAN'
+        ),
+        Helpers::Input.new(
+          '5; true + false; 5',
+          'ERROR: unknown operator: BOOLEAN + BOOLEAN'
+        ),
+        Helpers::Input.new(
+          'if (10 > 1) { true + false; }',
+          'ERROR: unknown operator: BOOLEAN + BOOLEAN'
+        ),
+        Helpers::Input.new(
+          'if (10 > 1) {
+if (10 > 1) {
+return true + false;
+}
+return 1; }',
+          'ERROR: unknown operator: BOOLEAN + BOOLEAN'
+        )
+      ]
+
+      inputs.each do |input|
+        test_error_type(evaluate(input.input), input.expected)
       end
     end
   end
