@@ -6,7 +6,7 @@ module Monkey
     extend T::Sig
     include ObjectType
 
-    sig { void }
+    sig { returns(NilClass) }
     def value
       nil
     end
@@ -18,7 +18,7 @@ module Monkey
 
     # TODO: Rename to .to_s?
     sig { override.returns(String) }
-    def inspect
+    def to_s
       'nil'
     end
   end

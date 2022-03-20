@@ -2,5 +2,7 @@
 #   srb rbi todo
 
 # typed: strong
+module T::InterfaceWrapper::Helpers; end
+module T::Private::Abstract::Hooks; end
 module T::Private::Methods::MethodHooks; end
 module T::Private::Methods::SingletonMethodHooks; end

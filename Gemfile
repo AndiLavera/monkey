@@ -14,6 +14,7 @@ gem 'rubocop-sorbet', require: false
 gem 'solargraph', require: false
 gem 'sorbet'
 gem 'unparser', '~> 0.6.4', require: false
+gem 'minitest'
 
 # group :development, :test do
 

@@ -1,5 +1,6 @@
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
+require 'rake/testtask'
 
 namespace 'test' do
   desc 'Run all tests'
@@ -31,7 +32,7 @@ task :lint do
     t.options = ['--display-cop-names']
   end
   RuboCop::RakeTask.new do |task|
-    task.requires << 'rubocop-rspec'
+    # task.requires << 'rubocop-rspec'
     task.requires << 'rubocop-performance'
     task.requires << 'rubocop-sorbet'
     task.requires << 'rubocop-rake'

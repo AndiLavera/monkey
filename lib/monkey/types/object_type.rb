@@ -7,6 +7,8 @@ module Monkey
     extend T::Helpers
     interface!
 
+    include Kernel
+
     INTEGER_TYPE = 'INTEGER'
     BOOLEAN_TYPE = 'BOOLEAN'
     NIL_TYPE = 'NIL'
@@ -15,6 +17,6 @@ module Monkey
     def type; end
 
     sig { abstract.returns(String) }
-    def inspect; end
+    def to_s; end
   end
 end

@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 module Monkey
-  # rubocop:disable Metrics/ClassLength
   class Parser
     extend T::Sig
 
@@ -398,5 +397,4 @@ got #{@peek_token.type} instead"
       Token::L_PAREN  => instance_method(:parse_call_expression!)
     }.freeze, T::Hash[String, UnboundMethod])
   end
-  # rubocop:enable Metrics/ClassLength
 end

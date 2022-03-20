@@ -11,7 +11,7 @@ module Monkey
       attr_reader :operator
 
       sig { returns(Expression) }
-      attr_reader :left, :right
+      attr_reader :left
 
       sig { returns(T.nilable(Expression)) }
       attr_reader :right

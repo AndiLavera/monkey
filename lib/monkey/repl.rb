@@ -40,7 +40,7 @@ module Monkey
         evaluator = Evaluator.new
         evaluated = evaluator.evaluate_program(program)
 
-        puts evaluated.inspect unless evaluated.nil?
+        puts evaluated if evaluated
       rescue Interrupt
         puts
       end

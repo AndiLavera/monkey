@@ -20,6 +20,9 @@ GEM
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
     mini_portile2 (2.8.0)
+    minitest (5.13.0)
+    minitest-skip (0.0.3)
+      minitest (~> 5.0)
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -121,6 +124,8 @@ PLATFORMS
 
 DEPENDENCIES
   byebug (~> 11.1)
+  minitest
+  minitest-skip
   monkey!
   prettier
   rake

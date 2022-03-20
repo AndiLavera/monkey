@@ -1,5 +1,5 @@
 require:
-  - rubocop-rspec
+  # - rubocop-rspec
   - rubocop-performance
   - rubocop-sorbet
   # - rubocop-rake
@@ -110,20 +110,20 @@ Style/SwapValues: # new in 1.1
   Enabled: true
 
 # Rspec
-RSpec/BeEq: # new in 2.9.0
-  Enabled: true
-RSpec/BeNil: # new in 2.9.0
-  Enabled: true
-RSpec/ExcessiveDocstringSpacing: # new in 2.5
-  Enabled: true
-RSpec/IdenticalEqualityAssertion: # new in 2.4
-  Enabled: true
-RSpec/SubjectDeclaration: # new in 2.5
-  Enabled: true
-RSpec/FactoryBot/SyntaxMethods: # new in 2.7
-  Enabled: true
-RSpec/Rails/AvoidSetupHook: # new in 2.4
-  Enabled: true
+# RSpec/BeEq: # new in 2.9.0
+#   Enabled: true
+# RSpec/BeNil: # new in 2.9.0
+#   Enabled: true
+# RSpec/ExcessiveDocstringSpacing: # new in 2.5
+#   Enabled: true
+# RSpec/IdenticalEqualityAssertion: # new in 2.4
+#   Enabled: true
+# RSpec/SubjectDeclaration: # new in 2.5
+#   Enabled: true
+# RSpec/FactoryBot/SyntaxMethods: # new in 2.7
+#   Enabled: true
+# RSpec/Rails/AvoidSetupHook: # new in 2.4
+#   Enabled: true
 
 # Performance
 Performance/AncestorsInclude: # new in 1.7
@@ -175,17 +175,23 @@ Layout/LineLength:
   Max: 80
   Enabled: true
 
-# TODO: Bring back to default?
-Metrics/MethodLength:
-  Enabled: true
-  Max: 20
-
-# TODO:
-RSpec/ExampleLength:
-  Enabled: false
-
-RSpec/MultipleExpectations:
-  Enabled: false
-
 AllCops:
   TargetRubyVersion: 2.7.0
+
+# TODOs: Bring back to default?
+Metrics/MethodLength:
+  Enabled: false
+
+# RSpec/ExampleLength:
+#   Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+# RSpec/MultipleExpectations:
+#   Enabled: false

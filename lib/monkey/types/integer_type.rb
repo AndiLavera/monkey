@@ -19,9 +19,8 @@ module Monkey
       INTEGER_TYPE
     end
 
-    # TODO: Rename to .to_s?
     sig { override.returns(String) }
-    def inspect
+    def to_s
       @value.to_s
     end
   end
