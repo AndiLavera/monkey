@@ -171,6 +171,10 @@ Layout/HashAlignment:
   Enabled: true
   EnforcedHashRocketStyle: table
 
+Layout/FirstHashElementIndentation:
+  Enabled: true
+  EnforcedStyle: consistent
+
 Layout/LineLength:
   Max: 80
   Enabled: true

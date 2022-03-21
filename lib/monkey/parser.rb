@@ -58,6 +58,15 @@ module Monkey
 
     sig { returns(T.nilable(AST::Statement)) }
     def parse_statement
+      # TODO: Parse without let
+      # if @curr_token.type == Token::IDENTIFIER && peek_token_is?(Token::ASSIGN)
+      #   return parse_let_statement!
+      # end
+
+      # return parse_return_statement! if @curr_token.type == Token::RETURN
+
+      # parse_expression_statement!
+
       case @curr_token.type
       when Token::LET then parse_let_statement!
       when Token::RETURN then parse_return_statement!
@@ -69,6 +78,7 @@ module Monkey
     sig { returns(T.nilable(AST::LetStatement)) }
     def parse_let_statement!
       token = @curr_token
+      # TODO: vvv comment this line out when removing `let` statements
       return nil unless expect_peek! Token::IDENTIFIER
 
       identifier = AST::Identifier.new @curr_token, @curr_token.literal

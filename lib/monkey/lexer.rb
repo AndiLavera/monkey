@@ -59,70 +59,23 @@ module Monkey
       read_char!
     end
 
-    # rubocop:disable Metrics/PerceivedComplexity
-
     sig { returns(Token) }
     def next_token!
       skip_whitespace! # Clear \n at EOF before we check `eof?`
       return finalize! if eof?
 
-      token = case curr_char
-              when Token::SEMICOLON
-                Token.new(Token::SEMICOLON, curr_char)
-              when Token::L_PAREN
-                Token.new(Token::L_PAREN, curr_char)
-              when Token::R_PAREN
-                Token.new(Token::R_PAREN, curr_char)
-              when Token::COMMA
-                Token.new(Token::COMMA, curr_char)
-              when Token::PLUS
-                Token.new(Token::PLUS, curr_char)
-              when Token::R_BRACE
-                Token.new(Token::R_BRACE, curr_char)
-              when Token::L_BRACE
-                Token.new(Token::L_BRACE, curr_char)
-              when Token::MINUS
-                Token.new(Token::MINUS, curr_char)
-              when Token::SLASH
-                Token.new(Token::SLASH, curr_char)
-              when Token::ASTERISK
-                Token.new(Token::ASTERISK, curr_char)
-              when Token::LT
-                Token.new(Token::LT, curr_char)
-              when Token::GT
-                Token.new(Token::GT, curr_char)
-              when Token::BANG
-                if peek_char_assign?
-                  read_char!
-                  Token.new(Token::NOT_EQ, Token::NOT_EQ)
-                else
-                  Token.new(Token::BANG, curr_char)
-                end
-              when Token::ASSIGN
-                if peek_char_assign?
-                  read_char!
-                  Token.new(Token::EQ, Token::EQ)
-                else
-                  Token.new(Token::ASSIGN, curr_char)
-                end
-              when Token::D_QUOTE
-                Token.new(Token::STRING, read_string)
-              else
-                if letter?
-                  word = read_identifier
-                  return Token.new(Token.lookup_keyword(word), word)
-                elsif digit?
-                  return Token.new(Token::INT, read_number)
-                else
-                  Token.new(Token::ILLEGAL, curr_char)
-                end
-              end
+      handler = LexerDispatcher[curr_char]
+      return handler.bind_call(self) if handler
 
-      read_char!
-      token
+      if letter?
+        word = read_identifier
+        Token.new(Token.lookup_keyword(word), word)
+      elsif digit?
+        Token.new(Token::INT, read_number)
+      else
+        Token.new(Token::ILLEGAL, curr_char)
+      end
     end
-
-    # rubocop:enable Metrics/PerceivedComplexity
 
     # Returns `true` when the lexer has completed and `Lexer#next_token!`
     # has returned the EOF token atleast once
@@ -139,6 +92,51 @@ module Monkey
     end
 
     private
+
+    sig { params(type: String, literal: String).returns(Token) }
+    def token(type: curr_char, literal: curr_char)
+      Token.new(type, literal)
+    end
+
+    sig { params(type: String, literal: String).returns(Token) }
+    def token!(type: curr_char, literal: curr_char)
+      tok = token(type: type, literal: literal)
+      read_char!
+      tok
+    end
+
+    sig { returns(Token) }
+    def bang!
+      tok = if peek_char_assign?
+              read_char!
+              Token.new(Token::NOT_EQ, Token::NOT_EQ)
+            else
+              Token.new(Token::BANG, curr_char)
+            end
+
+      read_char!
+      tok
+    end
+
+    sig { returns(Token) }
+    def assign!
+      tok = if peek_char_assign?
+              read_char!
+              Token.new(Token::EQ, Token::EQ)
+            else
+              Token.new(Token::ASSIGN, curr_char)
+            end
+
+      read_char!
+      tok
+    end
+
+    sig { returns(Token) }
+    def d_quote!
+      tok = Token.new(Token::STRING, read_string)
+      read_char!
+      tok
+    end
 
     # Runs the `next_position` counter until the end of an identifier
     # and returns that slice.
@@ -244,5 +242,23 @@ module Monkey
     def peek_eof?
       @input[@next_position].nil?
     end
+
+    LexerDispatcher = T.let({
+      Token::SEMICOLON => instance_method(:token!),
+      Token::L_PAREN   => instance_method(:token!),
+      Token::R_PAREN   => instance_method(:token!),
+      Token::L_BRACE   => instance_method(:token!),
+      Token::R_BRACE   => instance_method(:token!),
+      Token::COMMA     => instance_method(:token!),
+      Token::PLUS      => instance_method(:token!),
+      Token::MINUS     => instance_method(:token!),
+      Token::ASTERISK  => instance_method(:token!),
+      Token::SLASH     => instance_method(:token!),
+      Token::LT        => instance_method(:token!),
+      Token::GT        => instance_method(:token!),
+      Token::BANG      => instance_method(:bang!),
+      Token::ASSIGN    => instance_method(:assign!),
+      Token::D_QUOTE   => instance_method(:d_quote!)
+    }, T::Hash[String, UnboundMethod])
   end
 end

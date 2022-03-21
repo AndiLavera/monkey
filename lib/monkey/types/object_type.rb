@@ -16,6 +16,7 @@ module Monkey
     ERROR_TYPE        = 'ERROR'
     FUNCTION_TYPE     = 'FUNCTION'
     STRING_TYPE       = 'STRING'
+    BUILTIN = 'BUILTIN'
 
     sig { abstract.returns(String) }
     def type; end
