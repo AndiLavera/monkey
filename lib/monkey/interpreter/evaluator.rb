@@ -33,6 +33,8 @@ module Monkey
         IntegerType.new node.value
       when AST::BooleanLiteral
         native_bool_to_boolean_type(node.value)
+      when AST::StringLiteral
+        StringType.new(node.value)
       when AST::PrefixExpression
         right = run(T.must(node.right), env)
         return right if error?(right)

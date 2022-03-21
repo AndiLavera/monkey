@@ -14,7 +14,8 @@ module Monkey
     NIL_TYPE          = 'NIL'
     RETURN_VALUE_TYPE = 'RETURN_VALUE'
     ERROR_TYPE        = 'ERROR'
-    FUNCTION_TYPE      = 'FUNCTION'
+    FUNCTION_TYPE     = 'FUNCTION'
+    STRING_TYPE       = 'STRING'
 
     sig { abstract.returns(String) }
     def type; end

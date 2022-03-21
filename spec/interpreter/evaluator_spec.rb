@@ -227,6 +227,13 @@ return 1; }',
 
       test_int_type(evaluate(input), 4)
     end
+
+    it 'can evaluate string literals' do
+      input = Helpers::Input.new('"Hello World!"', 'Hello World!')
+      evaluated = evaluate(input.input)
+      expect(evaluated.class).to be(StringType)
+      expect(evaluated.value).to eq(input.expected)
+    end
   end
   # end
 end

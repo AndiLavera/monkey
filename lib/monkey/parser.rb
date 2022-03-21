@@ -319,6 +319,11 @@ module Monkey
       args
     end
 
+    sig { returns(AST::Expression) }
+    def parse_string_literal!
+      AST::StringLiteral.new(token: @curr_token, value: @curr_token.literal)
+    end
+
     sig { void }
     def next_token!
       @curr_token = @peek_token
@@ -382,7 +387,8 @@ got #{@peek_token.type} instead"
       Token::FALSE      => instance_method(:parse_boolean),
       Token::L_PAREN    => instance_method(:parse_grouped_expression),
       Token::IF         => instance_method(:parse_if_expression!),
-      Token::FUNCTION   => instance_method(:parse_function_literal!)
+      Token::FUNCTION   => instance_method(:parse_function_literal!),
+      Token::STRING     => instance_method(:parse_string_literal!)
     }.freeze, T::Hash[String, UnboundMethod])
 
     InfixDispatcher = T.let({
