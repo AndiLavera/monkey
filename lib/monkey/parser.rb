@@ -219,10 +219,7 @@ module Monkey
 
     sig { returns(AST::Identifier) }
     def parse_identifier
-      AST::Identifier.new(
-        @curr_token,
-        @curr_token.literal
-      )
+      AST::Identifier.new(@curr_token, @curr_token.literal)
     end
 
     sig { returns(T.nilable(AST::IntegerLiteral)) }
@@ -250,7 +247,6 @@ module Monkey
       return nil unless expect_peek! Token::L_PAREN
 
       parameters = parse_function_parameters!
-
       return nil unless expect_peek! Token::L_BRACE
 
       AST::FunctionLiteral.new(
@@ -289,8 +285,7 @@ module Monkey
       AST::CallExpression.new(
         token: @curr_token,
         function: function,
-        # TODO: || [] then remove T.nilable() from CallExpression constructor
-        arguments: parse_call_arguments!
+        arguments: parse_call_arguments! || []
       )
     end
 

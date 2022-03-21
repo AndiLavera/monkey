@@ -15,12 +15,12 @@ module Monkey
 
       sig do
         params(token: Token, function: Expression,
-               arguments: T.nilable(T::Array[AST::Expression])).void
+               arguments: T::Array[AST::Expression]).void
       end
       def initialize(token:, function:, arguments:)
         super(token: token)
         @function = function
-        @arguments = T.let(arguments || [], T::Array[AST::Expression])
+        @arguments = arguments
       end
 
       sig { returns(String) }
